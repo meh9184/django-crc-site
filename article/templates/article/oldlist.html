@@ -1,0 +1,361 @@
+    <!DOCTYPE html>
+    <html>
+    {% load staticfiles %}
+    <head>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css">
+    <script src="{% static 'jquery-2.2.3.min.js' %}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+    <script src="{% static 'foundation.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'foundation.min.css' %}"></link>
+    <meta charset="utf-8">
+    <style>
+        .header {
+            background-color:black;
+            color:white;
+            text-align:center;
+            top: 0x;
+            padding: 5x;
+        }
+        .left {
+            position: absolute;
+            left: 0px;
+            top: 340px;
+            width: 70%;
+            padding: 10px;
+        }
+        .center {
+            margin: auto;
+            width: 40%;
+            padding: 10px;
+            top: 100px;
+        }
+        .right {
+            position: absolute;
+            width:30%;
+            right: 0px;
+            top:350px;
+        }
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 5px;
+            text-align: left;
+        }
+        table tr:nth-child(even) {
+            background-color: #eee;
+        }
+        table tr:nth-child(odd) {
+            background-color:#fff;
+        }
+        table th {
+        background-color: #808080 ;
+        color: white;
+        }
+
+        ul.page {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.page li {display: inline; }
+
+        ul.page li a {
+            color: black;
+            float: left;
+            padding: 4px 12px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        ul.pagination li a:hover:not(.active) {background-color: #ddd;}</style>
+    </head>
+    <body>
+    {% if user.username %}
+    <div class="header">
+        <h1>Article List</h1>
+        <p align="right">{{user.username}}님 반갑습니다.</p>
+        <p align="right"><a href="/accounts/logout">로그아웃</a></p>
+        <p>Total_Article: {{contacts.paginator.count}} / Current_Page: {{contacts.number}}</p>
+        <p align="center"><a href="/article">기사DB 홈으로 가기</a> | <a href="/tagList?current_page=1">태그DB 홈으로 가기</a></p>
+        <div class="row">
+            <div class="large-4 large-centered columns">
+                <input placeholder="기사 키워드 검색" type="text" id="keyword"> <button type="button" class="button" onclick="do_search();">검색</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="small-6 large-6 columns">
+        <div class="right" >
+        <div class="primary callout">
+        <h4 style="text-align: center">기사 필터링</h4>
+            <hr>
+            <form action="articleList" accept-charset="utf-8" method = "post">
+                <fieldset>
+                    <h5 style="text-align: center">기간 검색</h5>
+                    <label>Start date</label>
+                    <input name="start_date" type="date">
+                    <label>End date</label>
+                    <input name="end_date" type="date">
+                </fieldset>
+            <hr>
+                <h5 style="text-align: center">언론사</h5>
+                    <input type="radio" name="press" value="경향신문">경향신문
+                    <input type="radio" name="press" value="국민일보">국민일보
+                    <input type="radio" name="press" value="동아일보">동아일보
+                    <input type="radio" name="press" value="문화일보">문화일보
+                    <input type="radio" name="press" value="서울신문">서울신문
+                    <input type="radio" name="press" value="세계일보">세계일보
+                    <input type="radio" name="press" value="조선일보">조선일보
+                    <input type="radio" name="press" value="중앙일보">중앙일보
+                    <input type="radio" name="press" value="한겨레">한겨레
+                    <input type="radio" name="press" value="한국일보">한국일보
+                    <input type="radio" name="press" value="매일경제">매일경제
+                    <input type="radio" name="press" value="머니투데이">머니투데이
+                    <input type="radio" name="press" value="서울경제">서울경제
+                    <input type="radio" name="press" value="아시아경제">아시아경제
+                    <input type="radio" name="press" value="이데일리">이데일리
+                    <input type="radio" name="press" value="조선비즈">조선비즈
+                    <input type="radio" name="press" value="파이낸셜뉴스">파이낸셜뉴스
+                    <input type="radio" name="press" value="한국경제">한국경제
+                    <input type="radio" name="press" value="헤럴드경제">헤럴드경제
+                    <input type="radio" name="press" value="SBS CNBC">SBS CNBS
+                    <input type="radio" name="press" value="노컷뉴스">노컷뉴스
+                    <input type="radio" name="press" value="데일리안">데일리안
+                    <input type="radio" name="press" value="미디어오늘">미디어오늘
+                    <input type="radio" name="press" value="오마이뉴스">오마이뉴스
+                    <input type="radio" name="press" value="프레시안">프레시안
+                    <input type="radio" name="press" value="디지털데일리">디지털데일리
+                    <input type="radio" name="press" value="디지털타임스">디지털타임스
+                    <input type="radio" name="press" value="블로터">블로터
+                    <input type="radio" name="press" value="아이뉴스24">아이뉴스24
+                    <input type="radio" name="press" value="전자신문">전자신문
+                    <input type="radio" name="press" value="ZDNet Korea">ZDNet Korea
+                    <input type="radio" name="press" value="뉴스위크">뉴스위크
+                    <input type="radio" name="press" value="레이디경향">레이디경향
+                    <input type="radio" name="press" value="매경이코노미">매경이코노미
+                    <input type="radio" name="press" value="머니위크">머니위크
+                    <input type="radio" name="press" value="시사IN Live">시사IN Live
+                    <input type="radio" name="press" value="신동아">신동아
+                    <input type="radio" name="press" value="씨네21">씨네21
+                    <input type="radio" name="press" value="월간 산">월간 산
+                    <input type="radio" name="press" value="이코노미스트">이코노미스트
+                    <input type="radio" name="press" value="일다">일다
+                    <input type="radio" name="press" value="주간경향">주간경향
+                    <input type="radio" name="press" value="주간동아">주간동아
+                    <input type="radio" name="press" value="주간조선">주간조선
+                    <input type="radio" name="press" value="중앙SUNDAY">중앙SUNDAY
+                    <input type="radio" name="press" value="한겨레21">한겨레21
+                    <input type="radio" name="press" value="한경비지니스">한경비지니스
+                    <input type="radio" name="press" value="기자협회보">기자협회보
+                    <input type="radio" name="press" value="여성신문">여성신문
+                    <input type="radio" name="press" value="조세일보">조세일보
+                    <input type="radio" name="press" value="참세상">참세상
+                    <input type="radio" name="press" value="코라이타임스">코리아타임스
+                    <input type="radio" name="press" value="코리아헤럴드">코리아헤럴드
+                    <input type="radio" name="press" value="코메디닷컴">코메디닷컴
+                    <input type="radio" name="press" value="헬스조선">헬스조선
+                    <input type="radio" name="press" value="강원일보">강원일보
+                    <input type="radio" name="press" value="매일신문">매일신문
+                    <input type="radio" name="press" value="부산일보">부산일보
+                    <input type="radio" name="press" value="정책브리핑">정책브리핑
+                    <hr>
+           <h5 style="text-align: center">주제 분류</h5>
+                    <input type="checkbox" name="checks[]" value="청와대">청와대
+                    <input type="checkbox" name="checks[]" value="국회/정당">국회/정당
+                    <input type="checkbox" name="checks[]" value="북한">북한
+                    <input type="checkbox" name="checks[]" value="국방/외교">국방/외교
+                    <input type="checkbox" name="checks[]" value="정치일반">정치
+                    <input type="checkbox" name="checks[]" value="금융">금융
+                    <input type="checkbox" name="checks[]" value="증권">증권
+                    <input type="checkbox" name="checks[]" value="산업/재계">산업/재계
+                    <input type="checkbox" name="checks[]" value="중기/번처">중기/벤처
+                    <input type="checkbox" name="checks[]" value="부동산">부동산
+                    <input type="checkbox" name="checks[]" value="글로벌경제">글로벌경제
+                    <input type="checkbox" name="checks[]" value="생활경제">생활경제
+                    <input type="checkbox" name="checks[]" value="경제 일반">경제
+                    <input type="checkbox" name="checks[]" value="사건사고">사건사고
+                    <input type="checkbox" name="checks[]" value="교육">교육
+                    <input type="checkbox" name="checks[]" value="노동">노동
+                    <input type="checkbox" name="checks[]" value="언론">언론
+                    <input type="checkbox" name="checks[]" value="환경">환경
+                    <input type="checkbox" name="checks[]" value="인권/복지">인권/복지
+                    <input type="checkbox" name="checks[]" value="식품/의료">식품/의료
+                    <input type="checkbox" name="checks[]" value="지역">지역
+                    <input type="checkbox" name="checks[]" value="인물">인물
+                    <input type="checkbox" name="checks[]" value="사회 일반">사회일반
+                    <input type="checkbox" name="checks[]" value="건강정보">건강정보
+                    <input type="checkbox" name="checks[]" value="자동차/시승기">자동차/시승기
+                    <input type="checkbox" name="checks[]" value="도로/교통">도로/교통
+                    <input type="checkbox" name="checks[]" value="여행/레저">여행/레저
+                    <input type="checkbox" name="checks[]" value="음식/맛집">음식/맛집
+                    <input type="checkbox" name="checks[]" value="패션/뷰티">패션/뷰티
+                    <input type="checkbox" name="checks[]" value="공연/전시">공연/전시
+                    <input type="checkbox" name="checks[]" value="책">책
+                    <input type="checkbox" name="checks[]" value="종교">종교
+                    <input type="checkbox" name="checks[]" value="날씨">날씨
+                    <input type="checkbox" name="checks[]" value="생활문화 일반">생활문화
+                    <input type="checkbox" name="checks[]" value="아시아/호주">아시아/호주
+                    <input type="checkbox" name="checks[]" value="미국/중남미">미국/중남미
+                    <input type="checkbox" name="checks[]" value="유럽">유럽
+                    <input type="checkbox" name="checks[]" value="중동/아프리카">중동/아프리카
+                    <input type="checkbox" name="checks[]" value="세계 일반">세계
+                    <input type="checkbox" name="checks[]" value="모바일">모바일
+                    <input type="checkbox" name="checks[]" value="인터넷/SNS">인터넷/SNS
+                    <input type="checkbox" name="checks[]" value="통신/뉴미디어">통신/뉴미디어
+                    <input type="checkbox" name="checks[]" value="IT 일반">IT일반
+                    <input type="checkbox" name="checks[]" value="보안/해킹">보안/해킹
+                    <input type="checkbox" name="checks[]" value="컴퓨터">컴퓨터
+                    <input type="checkbox" name="checks[]" value="게임/리뷰">게임/리뷰
+                    <input type="checkbox" name="checks[]" value="과학 일반">과학
+                    <input type="checkbox" name="checks[]" value="m">메르스
+                    <br>
+                    <hr>
+                    <div align="center">
+                        <input type="submit" class="button" value = "기간검색" >
+                            <br>
+                            <br>
+                        <input type="submit" class="button" value = "언론사별" >
+                            <br>
+                            <br>
+                        <input type="submit" class="button" value = "주제별" >
+                            <br>
+                            <br>
+                        <input type="submit" class="button" value = "언론사&주제별">
+							<br>
+							<br> 
+						<input type="button" class="button" value = "태그DB홈" onclick="location.href='/tagList?current_page=1'">
+			</div>
+            </form>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="small-6 large-6 columns">
+    <div class="left">
+    <table>
+        <tr>
+            <th>url</th>
+            <th>title</th>
+            <th>press</th>
+            <th>date</th>
+            <th>class</th>
+            <th>subClass</th>
+            <th>numComment</th>
+        </tr>	
+        {% if contacts %}
+            {% for contact in contacts %}
+                <tr>
+                    <td>
+                        <a href="{{contact.nUrl}}">
+                            Move to article
+                        </a>
+                    </td>
+                    <td>
+                    <a href="articleBody?id={{contact.id}}">
+                        {{contact.title}}
+                    </a>
+                </td>
+				<td>{{contact.press}}</td>
+				<td>{{contact.aDate}}</td>
+				<td>{{contact.nClass}}</td>
+				<td>{{contact.subClass}}</td>
+				<td>{{contact.numComment}}</td>
+			</tr>
+		{% endfor %}
+	{% else %}
+		<p>No articles are available.</p>
+	{% endif %}
+</table>
+<br>
+<div class="center">
+    <ul class="page" >
+        <li>
+            {% if contacts.has_previous %}
+            <a href="articleList?current_page={{contacts.previous_page_number}}">«</a>
+            {% endif %}
+        </li>
+        <li>
+            <a>{{contacts.number}} of {{contacts.paginator.num_pages}}</a>
+        </li>
+        <li>
+            {% if contacts.has_next %}
+            <a href="articleList?current_page={{contacts.next_page_number}}">»</a>
+            {% endif %}
+        </li>
+    </ul>
+
+</div>
+</div>
+</div>
+{% else %}
+    <h4 align="center" style="margin-top:20%;"><a href="/accounts/login">로그인</a>하세요</h4>
+{% endif %}
+</div>
+<div class="large reveal" id="popup" data-reveal>
+</div>
+</body>
+<script>
+      $(document).foundation();
+</script>
+
+<script>
+    function do_search(){
+           $.ajax({
+                type: 'POST',
+                url: 'keyword',
+                data: {
+                    keyword: $('#keyword').val(),
+                },
+                success: function (resp) {
+                    $('.left').html(resp)    
+                }
+            });
+
+    }
+    function next_page(){
+         $.ajax({
+                type: 'GET',
+                url: 'keyword',
+                data: {
+                    keyword: $('#keyword').val(),
+                    page: $('#next').val(), 
+                },
+                success: function (resp) {
+                    $('.left').html(resp)
+                }
+            });
+    }
+
+     function previous_page(){
+         $.ajax({
+                type: 'GET',
+                url: 'keyword',
+                data: {
+                    keyword: $('#keyword').val(),
+                    page: $('#previous').val(),
+                },
+                success: function (resp) {
+                    $('.left').html(resp)
+                }
+            });
+    }
+    function popup(id){
+         id = id;
+         $.ajax({
+                type: 'GET',
+                url: 'body',
+                data: {
+                    id: id,
+                },
+                success: function (resp) {
+                    $('#popup').html(resp).foundation('open');   
+                }
+            });
+    }
+</script>
+</html>

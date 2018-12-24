@@ -1,0 +1,849 @@
+<!doctype html>
+{% load staticfiles %}
+{% block content %}
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CRC project</title>
+        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css">
+        <script src="{% static 'jquery-2.2.3.min.js' %}"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+        <script src="{% static 'foundation.js' %}"></script>
+        <script src="{% static 'what-input.js' %}"></script>
+        <script src="{% static 'app.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'foundation.min.css' %}"></link>
+        <link rel="stylesheet" href="{% static 'app.css' %}"></link>
+
+
+    </head>
+    <body>
+    <div class="listhtml">
+        {% if user.username %}
+
+            <!-- DESKTOP NAVIGATION -->
+            <nav class="top-bar">
+                <div class="wrap">
+
+                    <div class="top-bar-left">
+                        <img src="/static/biglogo.png" style="float:left;">
+                    </div>
+                    <div class="top-bar-right">
+                        <div>
+                            <p align="right">{{user.username}}님 반갑습니다.</p>
+                        </div>
+                        <div>
+                            <ul class="menu" id="menu_area">
+                                <li id="dbhome"><a href="/article?current_page=1">Article_HOME</a></li>
+                                <li id="taghome"><a href="/tagList?current_page=1">TAG_HOME</a></li>
+                                <li><a href="/accounts/logout">로그아웃</a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </nav>
+
+            <!-- MAIN SECTION -->
+            <section class="main">
+
+            <br>
+            <h6>Article List</h6>
+            <div class="wrap">
+                <div class="row small-6 large-centered columns">
+                    <div class="large-11 columns">
+                        <input type="search" placeholder="Title Keyword" type="text" id="keyword">
+                        <input type="hidden" id="keyword_holder">
+                    </div>
+                    <div class="large-1 columns">
+                        <button type="button" class="secondary button" onclick="do_search();">Search</button>
+                    </div>
+                </div>
+
+                <div class="row small-6 large-centered columns">
+                    <form action = "home" accept-charset="utf-8" name = "person_info" method = "get">
+                        <div class="large-11 columns">
+                            <input type="search" name="q" placeholder="Title Keyword (Elasticsearch)" id="keyword"/>
+                            <input type="hidden" id="keyword_holder"/>
+                        </div>
+                        <div class="large-1 columns">
+                            <input type="submit" class="button secondary" value="Search"/>
+                        </div>
+                    </form>
+                </div>
+
+                <hr style="margin-top:0px; border-color:gray; width:100%">
+            </div>
+
+            <div class="wrap">
+                <div class="expanded row" style="width:80%;">
+
+                    <div class="small-12 medium-3 columns">
+                        <div class="sorting">
+                            <br>
+                            <h3>기사 필터링</h3>
+                            <hr>
+                            <form action="articleList" accept-charset="utf-8" method="get">
+                                <h5>기간</h5>
+                                <div class=" wrap row">
+                                    <div class="medium-6 columns">
+                                        <input id="start_date" name="start_date" min="2012-01-01" max="2016-00-00" type="date">
+                                    </div>
+                                    <div class="medium-6 columns">
+                                        <input id="end_date" name="end_date" min="2012-01-01" max="2016-00-00" type="date">
+                                    </div>
+                                </div>
+                                <hr>
+                                <h5 style="text-align: center">언론사</h5>
+                                <br>
+                                <div class="row">
+                                    <div class="small-11 small-centered colunms">
+                                        <ul class="mylist">
+                                            <li>
+                                                <input type="radio" name="press" value="" checked="true">전체</li>
+                                            <li>
+                                                <input type="radio" name="press" value="강원일보">강원일보</li>
+                                            <li>
+                                                <input type="radio" name="press" value="경기신문">경기신문</li>
+                                            <li>
+                                                <input type="radio" name="press" value="경향신문">경향신문</li>
+                                            <li>
+                                                <input type="radio" name="press" value="국민일보">국민일보</li>
+                                            <li>
+                                                <input type="radio" name="press" value="기자협회보">기자협회보</li>
+                                            <li>
+                                                <input type="radio" name="press" value="노컷뉴스">노컷뉴스</li>
+                                            <li>
+                                                <input type="radio" name="press" value="뉴스위크">뉴스위크</li>
+                                            <li>
+                                                <input type="radio" name="press" value="대전일보">대전일보</li>
+                                            <li>
+                                                <input type="radio" name="press" value="데일리안">데일리안</li>
+                                            <li>
+                                                <input type="radio" name="press" value="동아일보">동아일보</li>
+                                            <li>
+                                                <input type="radio" name="press" value="디지털데일리">디지털데일리</li>
+                                            <li>
+                                                <input type="radio" name="press" value="디지털타임스">디지털타임스</li>
+                                            <li>
+                                                <input type="radio" name="press" value="레이디경향">레이디경향</li>
+                                            <li>
+                                                <input type="radio" name="press" value="매경이코노미">매경이코노미</li>
+                                            <li>
+                                                <input type="radio" name="press" value="매일경제">매일경제</li>
+                                            <li>
+                                                <input type="radio" name="press" value="매일신문">매일신문</li>
+                                            <li>
+                                                <input type="radio" name="press" value="머니위크">머니위크</li>
+                                            <li>
+                                                <input type="radio" name="press" value="머니투데이">머니투데이</li>
+                                            <li>
+                                                <input type="radio" name="press" value="문화일보">문화일보</li>
+                                            <li>
+                                                <input type="radio" name="press" value="미디어오늘">미디어오늘</li>
+                                            <li>
+                                                <input type="radio" name="press" value="부산일보">부산일보</li>
+                                            <li>
+                                                <input type="radio" name="press" value="블로터">블로터</li>
+                                            <li>
+                                                <input type="radio" name="press" value="서울경제">서울경제</li>
+                                            <li>
+                                                <input type="radio" name="press" value="서울신문">서울신문</li>
+                                            <li>
+                                                <input type="radio" name="press" value="세계일보">세계일보</li>
+                                            <li>
+                                                <input type="radio" name="press" value="시사IN Live">시사IN Live</li>
+                                            <li>
+                                                <input type="radio" name="press" value="신동아">신동아</li>
+                                            <li>
+                                                <input type="radio" name="press" value="씨네21">씨네21</li>
+                                            <li>
+                                                <input type="radio" name="press" value="아시아경제">아시아경제</li>
+                                            <li>
+                                                <input type="radio" name="press" value="아이뉴스24">아이뉴스24</li>
+                                            <li>
+                                                <input type="radio" name="press" value="여성신문">여성신문</li>
+                                            <li>
+                                                <input type="radio" name="press" value="오마이뉴스">오마이뉴스</li>
+                                            <li>
+                                                <input type="radio" name="press" value="의협신문">의협신문</li>
+                                            <li>
+                                                <input type="radio" name="press" value="월간 산">월간 산</li>
+                                            <li>
+                                                <input type="radio" name="press" value="이데일리">이데일리</li>
+                                            <li>
+                                                <input type="radio" name="press" value="이코노미스트">이코노미스트</li>
+                                            <li>
+                                                <input type="radio" name="press" value="일다">일다</li>
+                                            <li>
+                                                <input type="radio" name="press" value="전자신문">전자신문</li>
+                                            <li>
+                                                <input type="radio" name="press" value="정책브리핑">정책브리핑</li>
+                                            <li>
+                                                <input type="radio" name="press" value="조선비즈">조선비즈</li>
+                                            <li>
+                                                <input type="radio" name="press" value="조선일보">조선일보</li>
+                                            <li>
+                                                <input type="radio" name="press" value="조세일보">조세일보</li>
+                                            <li>
+                                                <input type="radio" name="press" value="주간경향">주간경향</li>
+                                            <li>
+                                                <input type="radio" name="press" value="주간동아">주간동아</li>
+                                            <li>
+                                                <input type="radio" name="press" value="주간조선">주간조선</li>
+                                            <li>
+                                                <input type="radio" name="press" value="중앙SUNDAY">중앙SUNDAY</li>
+                                            <li>
+                                                <input type="radio" name="press" value="중앙일보">중앙일보</li>
+                                            <li>
+                                                <input type="radio" name="press" value="충청투데이">충청투데이</li>
+                                            <li>
+                                                <input type="radio" name="press" value="참세상">참세상</li>
+                                            <li>
+                                                <input type="radio" name="press" value="코라이타임스">코리아타임스</li>
+                                            <li>
+                                                <input type="radio" name="press" value="코리아헤럴드">코리아헤럴드</li>
+                                            <li>
+                                                <input type="radio" name="press" value="코메디닷컴">코메디닷컴</li>
+                                            <li>
+                                                <input type="radio" name="press" value="파이낸셜뉴스">파이낸셜뉴스</li>
+                                            <li>
+                                                <input type="radio" name="press" value="프레시안">프레시안</li>
+                                            <li>
+                                                <input type="radio" name="press" value="한겨레">한겨레</li>
+                                            <li>
+                                                <input type="radio" name="press" value="한겨레21">한겨레21</li>
+                                            <li>
+                                                <input type="radio" name="press" value="한경비지니스">한경비지니스</li>
+                                            <li>
+                                                <input type="radio" name="press" value="한국경제">한국경제</li>
+                                            <li>
+                                                <input type="radio" name="press" value="한국일보">한국일보</li>
+                                            <li>
+                                                <input type="radio" name="press" value="헤럴드경제">헤럴드경제</li>
+                                            <li>
+                                                <input type="radio" name="press" value="헬스조선">헬스조선</li>
+                                            <li>
+                                                <input type="radio" name="press" value="SBS CNBC">SBS CNBS</li>
+                                            <li>
+                                                <input type="radio" name="press" value="ZDNet Korea">ZDNet Korea</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <hr>
+                                <h5>주제 분류</h5>
+                                <br>
+                                <div clss="row">
+                                    <div class="small-11 small-centered colunms">
+                                        <ul class="mylist">
+
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="" checked="true">전체</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="건강정보">건강정보</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="게임/리뷰">게임/리뷰</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="경제 일반">경제</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="공연/전시">공연/전시</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="과학 일반">과학</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]"  onclick="check_only(this)" value="교육">교육</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="국방/외교">국방/외교</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="국회/정당">국회/정당</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="글로벌경제">글로벌경제</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="금융">금융</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="날씨">날씨</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]"  onclick="check_only(this)" value="노동">노동</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="도로/교통">도로/교통</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="m">메르스</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="모바일">모바일</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="미국/중남미">미국/중남미</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="보안/해킹">보안/해킹</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="부동산">부동산</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="북한">북한</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="사건사고">사건사고</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="사회 일반">사회일반</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="산업/재계">산업/재계</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="생활경제">생활경제</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="생활문화 일반">생활문화</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="세계 일반">세계</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="식품/의료">식품/의료</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="아시아/호주">아시아/호주</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="언론">언론</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="여행/레저">여행/레저</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="유럽">유럽</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="음식/맛집">음식/맛집</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="인권/복지">인권/복지</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="인물">인물</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="인터넷/SNS">인터넷/SNS</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="자동차/시승기">자동차/시승기</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="정치일반">정치</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="종교">종교</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="중기/번처">중기/벤처</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="중동/아프리카">중동/아프리카</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="증권">증권</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="지역">지역</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="책">책</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="청와대">청와대</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="컴퓨터">컴퓨터</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="통신/뉴미디어">통신/뉴미디어</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="패션/뷰티">패션/뷰티</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="환경">환경</li>
+                                            <li>
+                                                <input type="checkbox" name="checks[]" onclick="check_only(this)" value="IT 일반">IT일반</li>
+                                            <br>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div align="center">
+                                    <input type="submit" class="secondary button" value="검색">
+                                    <br>
+                                </div>
+                                <p style="color:black">* 검색 조건과 상황에 따라 검색 시간은 1~30초 가량 소요될 수 있습니다.</p>
+                            </form>
+                        </div>
+
+                    </div>
+
+                    <div class="small-12 medium-9 columns">
+                        <br>
+                        <div class="article_area">
+                            <table>
+                                <tr>
+                                    <th>url</th>
+                                    <th>tag</th>
+                                    <th>title</th>
+                                    <th>press</th>
+                                    <th>date</th>
+                                    <th>class</th>
+                                    <th>subClass</th>
+                                </tr>
+                                {% if query %}
+                                    {% for result in page_obj.object_list %}
+                                        <tr>
+                                            <td>
+                                                <a href="{{result.object.pUrl}}">
+                                                    Move to article
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {% for tag in tags %}
+
+                                                    {% if tag.aid ==  result.object.id %}
+                                                        ✔
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                <a href="articleBody?id={{result.object.id}}">
+                                                    {{result.object.title}}
+                                                </a>
+                                            </td>
+                                            <td>{{result.object.press}}</td>
+                                            <td>{{result.object.aDate}}</td>
+                                            <td>{{result.object.nClass}}</td>
+                                            <td>{{result.object.subClass}}</td>
+                                        </tr>
+
+                                    {% empty %}
+                                        <p>No results found.</p>
+                                    {% endfor %}
+                                    </table>
+
+                                    {% if page_obj.has_previous or page_obj.has_next %}
+{#                                        <div>#}
+{#                                            {% if page_obj.has_previous %}<a href="?q={{ query }}&amp;page={{ page_obj.previous_page_number }}">{% endif %}&laquo; Previous{% if page_obj.has_previous %}</a>{% endif %}#}
+{#                                            |#}
+{#                                            {% if page_obj.has_next %}<a href="?q={{ query }}&amp;page={{ page_obj.next_page_number }}">{% endif %}Next &raquo;{% if page_obj.has_next %}</a>{% endif %}#}
+{#                                        </div>#}
+
+                                        <ul class="pagination text-center" role="navigation" aria-label="Pagination">
+                                            {% if page_obj.has_previous %}
+                                                {% if keyword %}
+                                                    <li><a href="?q={{ query }}&amp;page={{ page_obj.previous_page_number }}" aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+                                                {% elif press %}
+                                                    {% if checks %}
+                                                        {% if start_date %}
+                                                            <li><a href="articleList?current_page={{page_obj.previous_page_number}}&press={{press}}&checks={{checks}}&start_date={{start_date}}&end_date={{end_date}}"  aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                        {% else %}
+                                                            <li><a href="articleList?current_page={{page_obj.previous_page_number}}&press={{press}}&checks={{checks}}"  aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <li><a href="articleList?current_page={{page_obj.previous_page_number}}&press={{press}}"  aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                    {% endif %}
+                                                {% elif checks%}
+                                                    {% if start_date %}
+                                                        <li><a href="articleList?current_page={{page_obj.previous_page_number}}&checks={{checks}}&start_date={{start_date}}&end_date={{end_date}}" aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                    {% else %}
+                                                        <li><a href="articleList?current_page={{page_obj.previous_page_number}}&checks={{checks}}" aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                    {% endif %}
+
+                                                {% elif start_date %}
+                                                    <li><a href="articleList?current_page={{page_obj.previous_page_number}}&start_date={{start_date}}&end_date={{end_date}}" aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                {% else %}
+                                                    <li class="pagination-previous"><a href="?q={{ query }}&amp;page={{ page_obj.previous_page_number }}" aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                {% endif %}
+                                            {% else %}
+                                                <li class="pagination-previous disabled">Previous <span class="show-for-sr">page</span></li>
+                                            {% endif %}
+
+                                            <li  class="current"> {{ page_obj.number }} <span class="show-for-sr">page</span></li>
+
+{#                                            {% for num in page_obj.paginator.page_range  %}#}
+{##}
+{#                                                {% if num == page_obj.paginator.num_pages %}#}
+{#                                                    <li class="current"><span class="show-for-sr">You're on page</span>{{num}}</li>#}
+{#                                                {% else %}#}
+{#                                                    {% if keyword %}#}
+{#                                                        <li><a href="?q={{query}}&page={{num}}">{{num}}</a></li>#}
+{#                                                    {% elif press %}#}
+{#                                                        {% if checks %}#}
+{#                                                            {% if start_date %}#}
+{#                                                                <li><a href="articleList?current_page={{num}}&press={{press}}&checks={{checks}}&start_date={{start_date}}&end_date={{end_date}}">{{num}}</a></li>#}
+{#                                                            {% else %}#}
+{#                                                                <li><a href="articleList?current_page={{num}}&press={{press}}&checks={{checks}}">{{num}}</a></li>#}
+{#                                                            {% endif %}#}
+{#                                                        {% else %}#}
+{#                                                            <li><a href="articleList?current_page={{num}}&press={{press}}">{{num}}</a></li>#}
+{#                                                        {% endif %}#}
+{##}
+{#                                                    {% elif checks%}#}
+{#                                                        {% if start_date %}#}
+{#                                                            <li><a href="articleList?current_page={{num}}&checks={{checks}}&start_date={{start_date}}&end_date={{end_date}}">{{num}}</a></li>#}
+{#                                                        {% else %}#}
+{#                                                            <li><a href="articleList?current_page={{num}}&checks={{checks}}">{{num}}</a></li>#}
+{#                                                        {% endif %}#}
+{##}
+{#                                                    {% elif start_date %}#}
+{#                                                        <li><a href="articleList?current_page={{num}}&start_date={{start_date}}&end_date={{end_date}}">{{num}}</a></li>#}
+{##}
+{#                                                    {% else %}#}
+{#                                                        <li><a href="?q={{query}}&page={{num}}">{{num}}</a></li>#}
+{#                                                    {% endif %}#}
+{#                                                {% endif %}#}
+{#                                            {% endfor %}#}
+
+
+
+                                            {% if page_obj.has_next %}
+                                                {% if keyword %}
+                                                    <li><a href="?q={{ query }}&amp;page={{ page_obj.next_page_number }}" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                {% elif press %}
+                                                    {% if checks %}
+                                                        {% if start_date %}
+                                                            <li><a href="articleList?current_page={{page_obj.next_page_number}}&press={{press}}&checks={{checks}}&start_date={{start_date}}&end_date={{end_date}}"  aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                        {% else %}
+                                                            <li><a href="articleList?current_page={{page_obj.next_page_number}}&press={{press}}&checks={{checks}}"  aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <li><a href="articleList?current_page={{page_obj.next_page_number}}&press={{press}}"  aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                    {% endif %}
+                                                {% elif checks%}
+                                                    {% if start_date %}
+                                                        <li><a href="articleList?current_page={{page_obj.next_page_number}}&checks={{checks}}&start_date={{start_date}}&end_date={{end_date}}" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                    {% else %}
+                                                        <li><a href="articleList?current_page={{page_obj.next_page_number}}&checks={{checks}}" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                    {% endif %}
+                                                {% elif start_date %}
+                                                    <li><a href="articleList?current_page={{page_obj.next_page_number}}&start_date={{start_date}}&end_date={{end_date}}" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                {% else %}
+                                                    <li class="pagination-next"><a href="?q={{ query }}&amp;page={{ page_obj.next_page_number }}" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+                                                {% endif %}
+                                            {% else %}
+                                                    <li class="pagination-next disabled">Next <span class="show-for-sr">page</span></li>
+                                            {% endif %}
+
+                                            <li> Total page: {{page_obj.paginator.num_pages}}</li>
+
+                                        </ul>
+
+
+
+                                    {% endif %}
+                                {% else %}
+                                    <script>
+                                        $(document).ready(function(){
+                                            keyword = $('#keyword').val();
+                                            temptest = $.ajax({
+                                                type: 'GET',
+                                                url: 'keyword',
+                                                data: {
+                                                    keyword: keyword,
+                                                },
+                                                success: function (resp) {
+                                                    $('#search_modal').css("display", "none");
+                                                    $('#keyword_holder').val(keyword);
+                                                    $('.listhtml').html(resp);
+                                                }
+                                            });;
+                                        });
+
+                                    </script>
+                                    {% if contacts %}
+                                        {% for contact in contacts %}
+                                            <tr>
+                                                <td>
+                                                    <a href="{{contact.nUrl}}">
+                                                        Move to article
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    {% for tag in tags %}
+
+                                                        {% if tag.aid ==  contact.id %}
+                                                            ✔
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </td>
+                                                <td>
+                                                    <a href="articleBody?id={{contact.id}}">
+                                                        {{contact.title}}
+                                                    </a>
+                                                </td>
+                                                <td>{{contact.press}}</td>
+                                                <td>{{contact.aDate}}</td>
+                                                <td>{{contact.nClass}}</td>
+                                                <td>{{contact.subClass}}</td>
+                                            </tr>
+
+                                        {% endfor %}
+                                    {% else %}
+                                        <p>No articles are available.</p>
+                                    {% endif %}
+                                    </table>
+                                    <br>
+                                    <div class="center">
+                                        <input type="hidden" id="pagelistnum" value="{{pagelistnum}}">
+                                        <input type="hidden" id="nextlistnum" value="{{nextpagelist}}">
+                                        <input type="hidden" id="prevlistnum" value="{{prevpagelist}}">
+                                        <ul class="pagination text-center" role="navigation" aria-label="Pagination">
+                                            {% if contacts.has_previous %}
+                                                {% if keyword %}
+                                                    <li><a href="keyword?current_page={{contacts.previous_page_number}}&keyword={{keyword}}" aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                {% elif press %}
+                                                    {% if checks %}
+                                                        {% if start_date %}
+                                                            <li><a href="articleList?current_page={{contacts.previous_page_number}}&press={{press}}&checks={{checks}}&start_date={{start_date}}&end_date={{end_date}}"  aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                        {% else %}
+                                                            <li><a href="articleList?current_page={{contacts.previous_page_number}}&press={{press}}&checks={{checks}}"  aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <li><a href="articleList?current_page={{contacts.previous_page_number}}&press={{press}}"  aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                    {% endif %}
+                                                {% elif checks%}
+                                                    {% if start_date %}
+                                                        <li><a href="articleList?current_page={{contacts.previous_page_number}}&checks={{checks}}&start_date={{start_date}}&end_date={{end_date}}" aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                    {% else %}
+                                                        <li><a href="articleList?current_page={{contacts.previous_page_number}}&checks={{checks}}" aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                    {% endif %}
+
+                                                {% elif start_date %}
+                                                    <li><a href="articleList?current_page={{contacts.previous_page_number}}&start_date={{start_date}}&end_date={{end_date}}" aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+
+                                                {% else %}
+                                                    <li class="pagination-previous"><a href="?current_page={{contacts.previous_page_number}}" aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+                                                {% endif %}
+                                            {% else %}
+                                                <li class="pagination-previous disabled">Previous <span class="show-for-sr">page</span></li>
+                                            {% endif %}
+                                            {% for num in pages_list %}
+                                                {% if num == contacts.number %}
+                                                    <li class="current"><span class="show-for-sr">You're on page</span>{{num}}</li>
+                                                {% else %}
+                                                    {% if keyword %}
+                                                        <li><a href="keyword?current_page={{num}}&keyword={{keyword}}">{{num}}</a></li>
+                                                    {% elif press %}
+                                                        {% if checks %}
+                                                            {% if start_date %}
+                                                                <li><a href="articleList?current_page={{num}}&press={{press}}&checks={{checks}}&start_date={{start_date}}&end_date={{end_date}}">{{num}}</a></li>
+                                                            {% else %}
+                                                                <li><a href="articleList?current_page={{num}}&press={{press}}&checks={{checks}}">{{num}}</a></li>
+                                                            {% endif %}
+                                                        {% else %}
+                                                            <li><a href="articleList?current_page={{num}}&press={{press}}">{{num}}</a></li>
+                                                        {% endif %}
+
+                                                    {% elif checks%}
+                                                        {% if start_date %}
+                                                            <li><a href="articleList?current_page={{num}}&checks={{checks}}&start_date={{start_date}}&end_date={{end_date}}">{{num}}</a></li>
+                                                        {% else %}
+                                                            <li><a href="articleList?current_page={{num}}&checks={{checks}}">{{num}}</a></li>
+                                                        {% endif %}
+
+                                                    {% elif start_date %}
+                                                        <li><a href="articleList?current_page={{num}}&start_date={{start_date}}&end_date={{end_date}}">{{num}}</a></li>
+
+                                                    {% else %}
+                                                        <li><a href="?current_page={{num}}">{{num}}</a></li>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {% if contacts.has_next %}
+                                                {% if keyword %}
+                                                    <li><a href="keyword?current_page={{contacts.next_page_number}}&keyword={{keyword}}" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                {% elif press %}
+                                                    {% if checks %}
+                                                        {% if start_date %}
+                                                            <li><a href="articleList?current_page={{contacts.next_page_number}}&press={{press}}&checks={{checks}}&start_date={{start_date}}&end_date={{end_date}}"  aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                        {% else %}
+                                                            <li><a href="articleList?current_page={{contacts.next_page_number}}&press={{press}}&checks={{checks}}"  aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <li><a href="articleList?current_page={{contacts.next_page_number}}&press={{press}}"  aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                    {% endif %}
+                                                {% elif checks%}
+                                                    {% if start_date %}
+                                                        <li><a href="articleList?current_page={{contacts.next_page_number}}&checks={{checks}}&start_date={{start_date}}&end_date={{end_date}}" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                    {% else %}
+                                                        <li><a href="articleList?current_page={{contacts.next_page_number}}&checks={{checks}}" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                    {% endif %}
+                                                {% elif start_date %}
+                                                    <li><a href="articleList?current_page={{contacts.next_page_number}}&start_date={{start_date}}&end_date={{end_date}}" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+
+                                                {% else %}
+                                                    <li class="pagination-next"><a href="?current_page={{contacts.next_page_number}}" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+                                                {% endif %}
+                                            {% else %}
+                                                <li class="pagination-next disabled">Next <span class="show-for-sr">page</span></li>
+                                            {% endif %}
+
+                                            <li> Total page: {{contacts.paginator.num_pages}}</li>
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+            <h5 align="center" style="margin: 19%"><a href="/accounts/login">로그인하세요</a></h5> {% endif %}
+        </section>
+        <!-- FOOTER -->
+
+        <footer>
+            <div class="wrap row small-up-1 medium-up-3">
+                <div class="column">
+                    <h4>Contact Info</h4>
+                    <hr>
+                    <p> 한양대학교 공과대학 컴퓨터소프트웨어학과</p>
+                    <p> 데이터베이스 연구실</p>
+                    <a href="http://db.hanyang.ac.kr">(홈페이지 가기)</a></br>
+                    <p><span> 서울특별시 성동구 왕십리로222 ITBT관 </span></p>
+                    <p>02-2220-4458</p>
+                </div>
+                <div class="column">
+                    <h4>Site Map</h4>
+                    <hr>
+                    <a href="/article"><span>Article List</span></a></br>
+                    <a href="/tagList?current_page=1"><span>Tag List</span></a>
+                </div>
+                <div class="column">
+                    <h4>Cooperation</h4>
+                    <hr>
+                    <a href="#" onclick="window.open('http://software.hanyang.ac.kr');">
+                        <img src="/static/hanyanglogo.png"></a><br>
+                    <a href="#" onclick="window.open('http://socio-info.hanyang.ac.kr/');">
+                        <img src="/static/socio.png"></a><br>
+                    <a href="#" onclick="window.open('http://www.nrf.re.kr/');">
+                        <img src="/static/korea.png"></a>
+                </div>
+            </div>
+        </footer>
+
+
+
+    </div>
+    <div id="search_modal" class="cust_modal">
+        <div class="cust_modal-content">
+            <span class="cust_close" onclick="stop_ajax();">×</span>
+            <h1 style="font-size:20pt">Searching...</h1>
+            <div style="text-align:center">
+                <br>
+                <br>
+                <button class="alert button" onclick="stop_ajax();">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+
+
+    <script>
+        $(document).foundation();
+    </script>
+
+    <script>
+        var temptest = 0;
+
+        function stop_ajax() {
+            temptest.abort();
+            var modala = document.getElementById('search_modal');
+            var spana = document.getElementsByClassName('cust_close')[0];
+            modala.style.display = "none";
+        }
+
+        function do_search() {
+            keyword = $('#keyword').val();
+            $('#search_modal').css("display","block");
+            temptest = $.ajax({
+                type: 'GET',
+                url: 'keyword',
+                data: {
+                    keyword: keyword,
+                },
+                success: function (resp) {
+                    $('#search_modal').css("display", "none");
+                    $('#keyword_holder').val(keyword);
+                    $('.listhtml').html(resp);
+                }
+            });
+
+        }
+
+        function next_page() {
+            $.ajax({
+                type: 'GET',
+                url: 'keyword',
+                data: {
+                    keyword: $('#keyword_holder').val(),
+                    page: $('#next').val(),
+                },
+                success: function (resp) {
+                    $('.article_area').html(resp);
+                }
+            });
+        }
+
+        function previous_page() {
+            $.ajax({
+                type: 'GET',
+                url: 'keyword',
+                data: {
+                    keyword: $('#keyword_holder').val(),
+                    page: $('#previous').val(),
+                },
+                success: function (resp) {
+                    $('.article_area').html(resp);
+                }
+            });
+        }
+
+        function move_page(page) {
+            $.ajax({
+                type: 'GET',
+                url: 'keyword',
+                data: {
+                    keyword: $('#keyword_holder').val(),
+                    page: page,
+                },
+                success: function (resp) {
+                    $('.article_area').html(resp);
+                }
+            });
+        }
+
+
+        function popup(id) {
+            id = id;
+            $.ajax({
+                type: 'GET',
+                url: 'body',
+                data: {
+                    id: id,
+                },
+                success: function (resp) {
+                    $('#popup').html(resp).foundation('open');
+                }
+            });
+        }
+
+        function check_only(chk){
+            var obj = document.getElementsByName("checks[]");
+            for(var i=0; i<obj.length; i++){
+                if(obj[i] != chk){
+                    obj[i].checked = false;
+                }
+            }
+        }
+    </script>
+    </html>
+{% endblock %}

@@ -1,0 +1,294 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+{% load staticfiles %}
+
+<head>
+    
+ <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRC project</title>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css">
+    <script src="{% static 'jquery-2.2.3.min.js' %}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+    <script src="{% static 'foundation.js' %}"></script>
+    <script src="{% static 'what-input.js' %}"></script>
+    <script src="{% static 'app.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'foundation.css' %}"></link>
+    <link rel="stylesheet" href="{% static 'app.css' %}"></link>
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRC project</title>
+
+
+
+
+    <style>
+        #pressmenu {
+            font-size: 15px;
+            font-family: "Palanquin", sans-serif;
+            font-weight:bold;
+            color: black;
+            background-color: white;
+            text-shadow: 1px 1px 1px white;
+        }     
+        .menu2 li a {
+            color: black;
+            font-weight:bold;}       
+        .menu2 li{
+            background-color: white; }
+        
+        .menu2 li:hover {
+            background-color: white;
+        }
+        
+
+    </style>
+</head>
+
+<body>
+    {% if user.username %}
+
+    <!-- DESKTOP NAVIGATION -->
+    <nav class="top-bar">
+        <div class="wrap">
+
+            <div class="top-bar-left">
+                <img src="/static/biglogo.png" style="float:left;">
+            </div>
+            <div class="top-bar-right">
+                <div>
+                    <p align="right">{{user.username}}님 반갑습니다.</p>
+                </div>
+                <div>
+                    <ul class="menu" id="menu_area">
+                        <li id="dbhome"><a href="/article/?current_page=1">Article_HOME</a></li>
+                        <li id="taghome"><a href="/tagList?current_page=1">TAG_HOME</a></li>
+                        <li><a href="/accounts/logout">로그아웃</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN SECTION -->
+    <section class="main">
+        <div class="wrap">
+            <br>
+
+            <div class="row" style="width:80%;">
+                <div class="small-6 large-centered columns">
+                    <form action="" method=''>
+                        <div class="input-group" style="height:5px;">
+                            <input class="input-group-field" placeholder="tag keyword" type="text" id="tagkeyword" autocomplete="off">
+                            <input type="text" style="display:none;" />
+
+                            <div class="input-group-button">
+                                <button type="button" class="secondary button" onclick="tag_search();">Search</button>
+                                <button type="button" class="secondary button" onclick="location.href='/tagBody?id='">All Tags</button>
+							</div>
+                        </div>
+                    </form>
+                    <hr>
+
+
+                </div>
+
+           <input type="hidden" id="pressid" value="">
+
+                <div class="tag_area">
+					<div>
+                        <h6 style="text-align:left">Tag List</h6>
+					</div>
+	
+                    <div class="small-12 small-centered columns">
+                        <!--                        drop menu-->
+                        <ul class="dropdown menu" data-dropdown-menu>
+
+
+
+                            <li>
+                                <a id="pressmenu">언론사</a>
+                                <ul class="menu2">
+                                    {% if presses %} {% for press in presses %}
+                                    <li id="{{press}}" onclick="tag_search(this.id)"><a href="#">{{press}}</a></li>
+                                    {% endfor %} {% endif %}
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <!--                     table-->
+                        <table>
+                            <tr>
+                                <th>Article</th>
+                                <th>Press</th>
+                                <th>Subject</th>
+                                <th>Object</th>
+                                <th>Verb</th>
+                                <th>What/How</th>
+								<th>Date</th>
+                            </tr>
+                            {% if contacts %} {% for contact in contacts %}
+                            <tr>
+                                <td>
+                                    <a href="articleBody?id={{contact.aid}}">
+							Move
+							</a>
+                                </td>
+                                <td>
+                                    {{contact.apress}}
+                                </td>
+                                <td>
+                                    {{contact.asubject}}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{contact.aobejct}}
+                                    </a>
+                                </td>
+                                <td>{{contact.averb}}</td>
+                                <td>{{contact.aetc}}</td>
+                                <td>{{contact.articleDate}}</td>
+                            </tr>
+                            {% endfor %} {% else %}
+                            <p>No tags are available.</p>
+                            {% endif %}
+
+                        </table>
+                        <!--      -->
+
+                        <br>
+                        <div class="center">
+                            <ul class="page">
+                                <li>
+                                    {% if contacts.has_previous %}
+                                    <a href="tagList?current_page={{contacts.previous_page_number}}">«</a> {% endif %}
+                                </li>
+                                <li>
+                                    <a>{{contacts.number}} of {{contacts.paginator.num_pages}}</a>
+                                </li>
+                                <li>
+                                    {% if contacts.has_next %}
+                                    <a href="tagList?current_page={{contacts.next_page_number}}">»</a> {% endif %}
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+        <h4 align="center"><a href="/accounts/login">로그인</a>하세요</h4> {% endif %}
+    </section>
+    <!-- FOOTER -->
+
+    <footer>
+        <div class="wrap row small-up-1 medium-up-3">
+            <div class="column">
+                <h4>Contact Info</h4>
+                <hr>
+                <p> 한양대학교 공과대학 컴퓨터소프트웨어학과</p>
+                <p> 데이터베이스 연구실</p>
+                <a href="http://db.hanyang.ac.kr">(홈페이지 가기)</a><br>
+                <p><span> 서울특별시 성동구 왕십리로222 ITBT관 </span></p>
+                <p>02-2220-4458</p>
+            </div>
+            <div class="column">
+                <h4>Site Map</h4>
+                <hr>
+                <a href="/article"><span>Article List</span></a><br>
+                <a href="/tagList?current_page=1"><span>Tag List</span></a>
+            </div>
+            <div class="column">
+                <h4>Cooperation</h4>
+                <hr>
+				<a href="#" onclick="window.open('http://software.hanyang.ac.kr');">
+                    <img src="/static/hanyanglogo.png"></a><br>
+                <a href="#" onclick="window.open('http://socio-info.hanyang.ac.kr/');">
+                    <img src="/static/socio.png"></a><br>
+                <a href="#" onclick="window.open('http://www.nrf.re.kr/');">
+                    <img src="/static/korea.png"></a>
+
+            </div>
+        </div>
+    </footer>
+
+
+
+
+</body>
+
+
+<script>
+    $(document).foundation();
+</script>
+
+<script>
+
+function tag_search(press) {
+        $('#pressid').val(press);
+        $.ajax({
+            type: 'POST',
+            url: 'tagkeyword',
+            data: {
+                keyword: $('#tagkeyword').val(),
+                press:press,
+            },
+            success: function (resp) {
+                $('.tag_area').html(resp)
+            },
+            error: function (request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+
+    }
+
+
+
+function next_page() {
+        $.ajax({
+            type: 'GET',
+            url: 'tagkeyword',
+            data: {
+                keyword: $('#tagkeyword').val(),
+                press:$('#pressid').val(),
+                page: $('#next').val(),
+            },
+            success: function (resp) {
+                $('.tag_area').html(resp)
+            }
+        });
+    }
+
+
+function previous_page() {
+        $.ajax({
+            type: 'GET',
+            url: 'tagkeyword',
+            data: {
+                keyword: $('#tagkeyword').val(),
+                press:$('#pressid').val(),
+                page: $('#previous').val(),
+            },
+            success: function (resp) {
+                $('.tag_area').html(resp)
+            }
+        });
+    }
+
+
+
+
+</script>
+
+
+
+</html>

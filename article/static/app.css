@@ -1,0 +1,147 @@
+@import url('http://fonts.googleapis.com/earlyaccess/nanumgothic.css')
+
+
+/* **************************************
+GENERAL
+*************************************** */ 
+*{font-family: "Nanum Gothic", sans-serif;}
+a,p,li,{margin: 0px; font-size: 100%;}
+img{width:80%;
+height: auto;}
+/**{font-family: "Palanquin", sans-serif;}*/
+*{ font-family: MyHelvetica;}
+.wrap{width: 95%;max-width:12000px;margin:0 auto; }
+
+
+body{font-size:80%;}
+
+#startdate,#enddate{width:100%; margin:0px; height: 75%; font-size:100%; padding:0px; }
+.medium-6.columns{padding:5px;}
+.small-6.large-centered.columns{height: 75%;}
+.input{padding:5px; height: 75%;}
+
+/* **********************************
+NAV
+*************************************** */
+
+.top-bar{padding:0px;}
+p,h,h2,h4{color: azure;}
+h5,h3,h6{font-weight: bold;}
+h,h1,h2,h3,h4,h5,h6{text-align: center;font-size: 10px; }
+h6{font-size: 20px;}
+h5,h4{font-size: 1em;}
+h3{font-size:1.1em;}
+.menu li{background-color:#142941;}
+.menu li:hover{background-color:#631313;}
+.menu li a{color:aliceblue;}
+ul{list-style-type: none;}
+.top-bar{
+    background: #142941 no-repeat fixed center;
+    color: aliceblue;
+    font-weight: bold;}
+/* **************************************
+HERO
+*************************************** */
+.hero{
+    background: #142941;
+    padding: 20px 0px;
+    height: 100px;
+    opacity: 0.5%;} 
+
+.medium-2 columns{
+    overflow:auto;
+}
+
+.ul mylist{
+    list-style:none;
+    margin:0px;
+    padding:0px;
+    max-width:200px;
+        max-height:250px;
+    overflow:auto;
+    width:100%;
+}
+.mylist li{
+    width:100px;
+    float:left;
+    line-height: 0.8rem;
+}
+.small-11{
+    max-height:250px;
+    overflow:auto;
+}
+
+/* **************************************
+Main
+*************************************** */
+.startdate,.enddate{ width:auto;font-size:75%;}
+.sorting,.article_area{min-height:600px;}
+.sorting{
+    padding:5px;
+    background-color:#F2F2F2;
+    margin-top:10px;
+    width:100%;}
+/* **************************************
+Footer
+*************************************** */
+footer{
+	margin-top:5%;
+    background-image: url("/static/pattern.png");
+    padding:15px 0px;}
+footer h4{ border-color: rgba(255,255,255,0.8); font-size:17px;}
+footer hr{ border-color:gray;}
+footer a,footer p{
+    display:block;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    line-height: 1.3em;
+margin-bottom:0px;}
+footer a:hover{ color: rgba(255,255,255,0.8); }
+a img{
+    width:40%;
+    height:auto;
+    padding-bottom:5px;
+}
+
+/* **************************************
+Modal
+*************************************** */
+
+/* The Modal (background) */
+.cust_modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.cust_modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.cust_close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.cust_close:hover,
+.cust_close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8" />
+    <title>서비스 이용 안내</title>
+
+    <!-- Custom CSS-->
+    <link href="{% static 'css/serviceNotice.css' %}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <h4>Socio-Infomatics Center 서비스 이용 안내</h4>
+    <p>Socio-Informatics Center에서 제공하는 모든 서비스는 누구나 사용가능한 오픈 서비스입니다. 상기 서비스를 이용하시기를 원하시면
+    아래 첨부된 양식에 요구되는 내용을 입력하시어 관리자 이메일 주소<span style="color:blue; text-decoration:underline;">(chajh@hanyang.ac.kr)</span>로 전송해 주시기 바랍니다. 작성된 내용을 확인하고
+    서비스 이용권한이 있는 개인 계정을 새로 만들어 해당 계정 정보를 안내해 드리겠습니다.</p>
+    <br />
+
+	<p style="color:green;">회원가입 요청 메일을 보내주시면 개인정보활용동의서 파일을 첨부드리니 서명후 회신부탁드립니다. 제출된 정보수집 목적은 안정적인 서비스 운영에 국한되며 기타 상업적 목적으로 사용되지
+ 않음을 알려드립니다.</p>
+    <h4 style="color:red;">서비스 이용 양식 안내</h4>
+    <p>
+        1. 이름 : <br />
+        2. 신분 : <br />
+        3. 서비스 사용목적 : <br /> 
+        4. 답변 받으실 이메일 주소 : <br />
+		5. 개인정보활용동의파일 <br />
+    </p>
+    <br />
+    <h4 style="color:red;">서비스 이용 양식 안내 - 예시</h4>
+    <p>
+        1. 이름 : <span>홍길동</span> <br />
+        2. 신분 : <span>개발자 / 학생</span> <br />
+        3. 서비스 사용목적 : 사회학적 문제를 Socio-Infomatics Center에서 제공하는 데이터시각화 서비스를 이용하여 해결해보기 위함.<br />
+        4. 답변 받으실 이메일 주소 : user@naver.com <br />
+		5. 개인정보활용동의파일 <br />
+    </p>
+
+    <button>닫기</button>
+
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+    
+    <!-- CRC Custom-->
+    <script>
+        $(function () {
+            $('button').on('click', function () {
+                window.open("about:blank", "_self").close();
+            })
+
+
+        });
+    </script>
+</body>
+</html>

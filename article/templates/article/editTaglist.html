@@ -1,0 +1,41 @@
+{% load staticfiles %}
+
+
+<div class="saved_taglist">
+                                <br>
+                                <div class="row align-justify">
+                                    <div class="column small-4">
+                                        <h5>저장된 태그 리스트</h5>
+                                    </div>
+                                    <div class="column small-6">
+                                        <h6 style="color:green;">*저장된 태그 수정시 주어/목적어/동사/기타
+ 부분만 수정가능합니다. 그외 수정은 삭제후 다시저장해야합니다.</h6>
+                                    </div>
+                                </div>
+                                <table id="tagList">
+                                <thead>                                                                    
+    <th>주어</th>
+    <th>목적어</th>
+    <th>동사</th>
+    <th>무엇을/어떻게</th>
+    <th>직접/자동(S/O/V/E)</th>
+        <th>해당문장</th>
+    <th>수정/삭제</th>
+</thead>
+<tbody>
+    {% for tag in tags %}
+    <tr class="{{tag.id}}tr">    
+        <td class="{{tag.id}}">{{tag.asubject}}</td>
+        <td class="{{tag.id}}">{{tag.aobejct}}</td>
+        <td class="{{tag.id}}">{{tag.averb}}</td>
+        <td class="{{tag.id}}">{{tag.aetc}}</td>
+        <td>{{tag.subjectflag}} / {{tag.objectflag}} / {{tag.verbflag}} / {{tag.etcflag}}</td>
+                <td><button type="button" class="button" id="showsentence" onclick="showSentence({{tag.id}})">문장</br>보기</button></td>
+        <td class="{{tag.id}}td">
+            <button onclick="editTag({{tag.id}})" type="button" class="warning button {{tag.id}}btn">수정</button>
+            <button onclick="deleteTag({{tag.id}})" type="button" class="alert button {{tag.id}}btn">삭제</button></td>
+    </tr>
+    {% endfor %}
+</tbody>
+                                </table>
+            </div>

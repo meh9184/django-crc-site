@@ -1,0 +1,94 @@
+{% load staticfiles %}
+			<div class="tag_area">
+			    <div>
+                <h6 style="text-align:left">Tag List</h6>
+                </div>
+				 <div class="small-12 small-centered columns">
+
+                	<ul class="dropdown menu" data-dropdown-menu>
+                    	<li>
+                        	<a id="pressmenu">언론사</a>
+					
+					<div class="press_li">
+                            <ul class="menu">
+                                    <li class="press_li" id="" onclick="tag_search(this.id)"><a href="/tagList?current_page=1" style="border-left:none;">통합</a></li>
+                                {% if presses %}
+                                {% for press in presses %}
+                                    <li class="press_li" id="{{press}}" onclick="tag_search(this.id)"><a href="#">{{press}}</a></li>
+                                {% endfor %}
+                                {% endif %}
+                            </ul>
+                    </li>
+                </ul>
+				</div>
+			</div>
+		</div>
+
+
+<table style= "margin-top:100px;">
+    <tr>
+		<th>Article</th>
+		<th>Press</th>
+        <th>Subject</th>
+        <th>Object</th>
+        <th>Verb</th>
+        <th>What/How</th>
+		<th>Date</th>
+    </tr>
+    {% if contacts %}
+        {% for contact in contacts %}
+            <tr>
+                <td>
+					<a href="articleBody?id={{contact.aid}}">
+					Move
+					</a>
+				</td>
+                <td>
+					{{contact.apress}}
+				</td>
+                <td>
+					<!--
+					<a href="tagBody?id={{contact.asubject}}">
+					-->
+					{{contact.asubject}}
+					</a>
+				</td>
+				<td>
+					<!--
+					<a href="tagBody?id={{contact.aobejct}}">
+					-->
+					{{contact.aobejct}}
+					</a>
+				</td>
+                <td>{{contact.averb}}</td>
+                <td>{{contact.aetc}}</td>
+                <td>{{contact.articleDate}}</td>
+            </tr>
+        {% endfor %}
+    {% else %}
+        <p>No tags are available.</p>
+    {% endif %}
+</table>
+<div class="center">
+    <ul class="page" >
+        <input type="hidden" id="keyword" value={{keyword}}>
+		<input type="hidden" id="press" value={{press}}>
+        <li>
+            {% if contacts.has_previous %}
+            <input type="hidden" id="previous" value={{contacts.previous_page_number}}>
+            <a onclick="previous_page();">«</a>
+            {% endif %}
+        </li>
+        <li>
+            <a>{{contacts.number}} of {{contacts.paginator.num_pages}}</a>
+        </li>
+        <li>
+            {% if contacts.has_next %}
+            <input type="hidden" id="next" value={{contacts.next_page_number}}>
+            <a onclick="next_page();">»</a>
+            {% endif %}
+        </li>
+    </ul>
+</div>
+
+

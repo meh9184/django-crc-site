@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    {% load staticfiles %}
+
+	<head>
+		<link rel="stylesheet" href="{% static 'foundation.min.css' %}"></link>
+	<style>
+		.center {
+			width: 100%;
+			padding: 10px;
+			text-align:center;
+		}
+	</style>
+	</head>
+
+	<body class="center">
+			<div class="large-4 large-centered columns">
+			<h4 style="margin:5%;">Success to sign up</h4>
+			<button class="button" onclick="closePopUp()">Close</button>
+			</div>
+	</body>
+
+<script>
+	function closePopUp(){
+		window.close();
+	}
+</script>
+</html>

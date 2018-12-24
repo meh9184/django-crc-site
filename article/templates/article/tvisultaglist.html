@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+
+<head>
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css">
+    <script src="{% static 'jquery-2.2.3.min.js' %}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+
+    <script src="{% static 'foundation.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'foundation.min.css' %}"></link>
+	<link rel="stylesheet" href="{% static 'app.css' %}"></link>
+
+    <meta charset="utf-8">
+    <title>DBLAB.</title>
+    <style>
+		
+        /*
+        * {
+            margin: 0;
+            padding: 0;
+        }
+*/
+/*        textstyle.css*/
+        wrap {
+    background-color: darkslategrey;
+}
+
+/*article list home/ */
+
+.left h1 {
+    font-size: 30px;
+    font-family: "Palanquin", sans-serif;
+    line-height: 1;
+    color: greenyellow;
+    margin: 5px auto;
+    margin-top: 0.01%;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 1px #000;
+}
+
+
+#clickmenu {
+    position: absolute;
+    top:1px;
+    padding: 5px;
+    margin: 0px 20%;
+    height: 5%;
+    background-color: #white;
+    text-align: center;
+    width: 77%;
+}
+
+#clickmenu ul {
+    margin: 0px 20%;
+    padding: 0;
+    list-style:circle;
+/*
+    width: 50%;
+    top: 250px;
+*/
+        
+}
+
+#clickmenu li {
+    position;
+    margin-left: 0px auto;
+    display: line;
+    float: left;
+    text-align: center;
+    width: 30%;
+    height: 30px;
+/*    line-height: 40px;*/
+    list-style: none;
+    padding: 0px 10px;
+    border-left: 1px solid #999;
+}
+#clickmenu li:first-child{border-left:none;} 
+
+#clickmenu li p {
+    font-size: 15px;
+    font-family: "Palanquin", sans-serif;
+    text-decoration: none;
+    text-align: center;
+    padding: 5px;
+    color: greenyellow;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#clickmenu li a {
+    font-size:22px;
+    font-family: "Palanquin", sans-serif;
+        color: greenyellow;
+        text-shadow: 1px 1px 1px #000;
+
+    
+}
+
+.press_li a{
+	color:white;
+    border-left: 1px solid #999;
+}
+
+
+#pressmenu {
+    font-size:22px;
+    font-family: "Palanquin", sans-serif;
+    color: greenyellow;
+    text-shadow: 1px 1px 1px #000;
+
+}
+
+        
+        
+        
+        
+/*        inputstyle.css */
+        @import url(http://fonts.googleapis.com/css?family=Cabin:400);
+.block {
+    position: absolute;
+    width: 50%;
+    left: 25%;
+    right: 25%;
+    top: 6%;
+}
+
+.webdesigntuts-workshop {
+    /*    background: #151515;*/
+    height: 50%;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+
+.webdesigntuts-workshop:before,
+.webdesigntuts-workshop:after {
+    content: '';
+    display: block;
+    height: 1px;
+    left: 50%;
+    margin: 0 0 0 -400px;
+    position: absolute;
+    width: 800px;
+}
+
+
+/*
+.webdesigntuts-workshop:before {
+    background: white;
+    background: -webkit-linear-gradient(left, #151515, #444, #151515);
+    background: -moz-linear-gradient(left, #151515, #444, #151515);
+    background: -o-linear-gradient(left, #151515, #444, #151515);
+    background: -ms-linear-gradient(left, #151515, #444, #151515);
+    background: linear-gradient(left, #151515, #444, #151515);
+    top: 192px;
+}
+*/
+
+
+/*
+.webdesigntuts-workshop:after {
+    background: #000;
+    background: -webkit-linear-gradient(left, #151515, #000, #151515);
+    background: -moz-linear-gradient(left, #151515, #000, #151515);
+    background: -o-linear-gradient(left, #151515, #000, #151515);
+    background: -ms-linear-gradient(left, #151515, #000, #151515);
+    background: linear-gradient(left, #151515, #000, #151515);
+    top: 91px;
+}
+*/
+
+.webdesigntuts-workshop form {
+    background: #111;
+    background: -webkit-linear-gradient(#1b1b1b, #111);
+    background: -moz-linear-gradient(#1b1b1b, #111);
+    background: -o-linear-gradient(#1b1b1b, #111);
+    background: -ms-linear-gradient(#1b1b1b, #111);
+    /*    background: linear-gradient(#1b1b1b, #111);*/
+    border: 1px solid #000;
+    border-radius: 5px;
+    box-shadow: inset 0 0 0 1px #272727;
+    display: inline-block;
+    font-size: 0px;
+    margin: 0px auto;
+    margin-bottom: 10px;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+    filter: alpha(opacity=70);
+    opacity: 0.7;
+    -moz-opacity: 0.3;
+}
+
+.webdesigntuts-workshop input {
+    background: #585858;
+    background: -webkit-linear-gradient(#333, #222);
+    background: -moz-linear-gradient(#333, #222);
+    background: -o-linear-gradient(#333, #222);
+    background: -ms-linear-gradient(#333, #222);
+    background: linear-gradient(#333, #222);
+    border: 1px solid #444;
+    border-radius: 5px 0 0 5px;
+    box-shadow: 0 2px 0 #000;
+    color: #888;
+    display: block;
+    float: left;
+    font-family: 'Cabin', helvetica, arial, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    height: 40px;
+    margin: 0;
+    padding: 0 10px;
+    text-shadow: 0 -1px 0 #000;
+    width: 370px;
+}
+
+.ie .webdesigntuts-workshop input {
+    line-height: 40px;
+}
+
+.webdesigntuts-workshop input::-webkit-input-placeholder {
+    color: #888;
+}
+
+.webdesigntuts-workshop input:-moz-placeholder {
+    color: #888;
+}
+
+.webdesigntuts-workshop input:focus {
+    -webkit-animation: glow 800ms ease-out infinite alternate;
+    -moz-animation: glow 800ms ease-out infinite alternate;
+    -o-animation: glow 800ms ease-out infinite alternate;
+    -ms-animation: glow 800ms ease-out infinite alternate;
+    animation: glow 800ms ease-out infinite alternate;
+    background: #222922;
+    background: -webkit-linear-gradient(#333933, #222922);
+    background: -moz-linear-gradient(#333933, #222922);
+    background: -o-linear-gradient(#333933, #222922);
+    background: -ms-linear-gradient(#333933, #222922);
+    background: linear-gradient(#333933, #222922);
+    border-color: #393;
+    box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+    color: #efe;
+    outline: none;
+}
+
+.webdesigntuts-workshop input:focus::-webkit-input-placeholder {
+    color: #efe;
+}
+
+.webdesigntuts-workshop input:focus:-moz-placeholder {
+    color: #efe;
+}
+
+.webdesigntuts-workshop button {
+    background: #585858;
+    background: -webkit-linear-gradient(#333, #222);
+    background: -moz-linear-gradient(#333, #222);
+    background: -o-linear-gradient(#333, #222);
+    background: -ms-linear-gradient(#333, #222);
+    background: linear-gradient(#333, #222);
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -o-box-sizing: content-box;
+    -ms-box-sizing: content-box;
+    box-sizing: content-box;
+    border: 1px solid #444;
+    border-left-color: #000;
+    border-radius: 0 5px 5px 0;
+    box-shadow: 0 2px 0 #000;
+    color: #fff;
+    display: block;
+    float: left;
+    font-family: 'Cabin', helvetica, arial, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    height: 38px;
+    line-height: 40px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    text-shadow: 0 -1px 0 #000;
+    width: 102px;
+}
+
+.webdesigntuts-workshop button:hover,
+.webdesigntuts-workshop button:focus {
+    background: #292929;
+    background: -webkit-linear-gradient(#393939, #292929);
+    background: -moz-linear-gradient(#393939, #292929);
+    background: -o-linear-gradient(#393939, #292929);
+    background: -ms-linear-gradient(#393939, #292929);
+    background: linear-gradient(#393939, #292929);
+    color: #5f5;
+    outline: none;
+}
+
+.webdesigntuts-workshop button:active {
+    background: #292929;
+    background: -webkit-linear-gradient(#393939, #292929);
+    background: -moz-linear-gradient(#393939, #292929);
+    background: -o-linear-gradient(#393939, #292929);
+    background: -ms-linear-gradient(#393939, #292929);
+    background: linear-gradient(#393939, #292929);
+    box-shadow: 0 1px 0 #000, inset 1px 0 1px #222;
+    top: 1px;
+}
+
+@-webkit-keyframes glow {
+    0% {
+        border-color: #393;
+        box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+    }
+    100% {
+        border-color: #6f6;
+        box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+    }
+}
+
+@-moz-keyframes glow {
+    0% {
+        border-color: #393;
+        box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+    }
+    100% {
+        border-color: #6f6;
+        box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+    }
+}
+
+@-o-keyframes glow {
+    0% {
+        border-color: #393;
+        box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+    }
+    100% {
+        border-color: #6f6;
+        box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+    }
+}
+
+@-ms-keyframes glow {
+    0% {
+        border-color: #393;
+        box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+    }
+    100% {
+        border-color: #6f6;
+        box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+    }
+}
+
+@keyframes glow {
+    0% {
+        border-color: #393;
+        box-shadow: 0 0 5px rgba(0, 255, 0, .2), inset 0 0 5px rgba(0, 255, 0, .1), 0 2px 0 #000;
+    }
+    100% {
+        border-color: #6f6;
+        box-shadow: 0 0 20px rgba(0, 255, 0, .6), inset 0 0 10px rgba(0, 255, 0, .4), 0 2px 0 #000;
+    }
+}
+        
+        
+        
+        
+       /*
+        html, body{height: 100%}
+        body{ margin:0}
+        */
+        
+        #back {
+            width: 100%;
+            height: 90%;
+/*
+            filter: alpha(opacity=70);
+            opacity: 0.7;
+            -moz-opacity: 0.3;
+*/
+        }
+        /*
+        .wrap {
+            min-height: 100%;
+            position: relative;
+            width: 100%;
+            margin: 0 auto;
+        }
+*/
+        
+        .header {
+            background-color: black;
+            color: white;
+            text-align: center;
+            top: 0x;
+            padding: 5x;
+        }
+        
+        .left {
+            position: absolute;
+            left: 15%;
+            top: 13%;
+            width: 70%;
+            padding: 10px;
+			margin-bottom: 7%;
+        }
+        /*
+        .center {
+            background color: whitesmoke;
+            margin: auto;
+            width: 50%;
+            padding: 10px;
+            margin-left:auto;
+            margin-right: auto;
+            top: 100px;
+            box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+*/
+        /*
+        .block {
+            border-radius: 10px;
+            border: 3px solid #F2F2F2;
+            padding: 2px 8px 2px 8px;
+            font-family: Arial, sans-serif;
+            line-height: 1.3em;
+            background color: whitesmoke;
+            margin: auto;
+            width: 40%;
+            padding: 10px;
+            top: 6%;
+            box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.2);
+        }
+*/
+        
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            padding: 5px;
+            text-align: left;
+        }
+        
+        table tr:nth-child(even) {
+            background-color: #eee;
+        }
+        
+        table tr:nth-child(odd) {
+            background-color: #fff;
+        }
+        
+        table th {
+            background-color: #808080;
+            color: white;
+        }
+        
+        ul.page {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+        }
+        
+        ul.page li {
+            display: inline;
+        }
+        
+        ul.page li a {
+            color: black;
+            float: left;
+            padding: 4px 12px;
+            text-decoration: none;
+            border: 1px solid black;
+			background: white;
+            font-size: 16px;
+            font-family: 'Quattrocento Sans', sans-serif;
+        }
+        /*
+        .block p {
+            text-decoration: none;
+            font-family: Georgia;
+            font-size: 100%;
+            color: aquamarine
+                margin-top:150px;
+        }
+*/
+        
+        ul.pagination li a:hover:not(.active) {
+            background-color: #ddd;
+        }
+        /*
+        
+        input {
+            width: 70%;
+            height: 12px;
+            padding: 6px 12px;
+            font-size: 1em;
+            color: #787878;
+            letter-spacing: -0.02em;
+            text-shadow: 0px 1px 0px #fff;
+            outline: none;
+            background: -webkit-gradient(linear, left top, left bottom, from(#e0e0e0), to(#ffffff));
+            background: -moz-linear-gradient(top, #e0e0e0, #ffffff);
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            border: 2px solid #white;
+            margin-left: 10%;
+            margin-right: 10%;
+            -webkit-box-shadow: 1px 1px 0px #efefef;
+            -moz-box-shadow: 1px 1px 0px #efefef;
+            box-shadow: 1px 1px 0px #efefef;
+        }
+        
+        button {
+            background-color: #424242;
+            border-radius: 5px;
+            border: 2px solid #cccccc;
+            padding: 2px 8px 2px 8px;
+            font-family: Arial, sans-serif;
+            font-size: 90%;
+            color: white;
+            margin-top: 5px;
+            margin-left: 35%;
+            margin-right: 35%;
+            width: 30%
+        }
+*/
+        
+        .footer {
+            position: fixed;
+            bottom: 0px;
+            /*            backgrund-image:url(meniuBG.jpg);*/
+            background-color: white;
+            height: 70px;
+            clear: both;
+            width: 100%;
+        }
+        
+        .logo2 img {
+            position: relative;
+            left: 40%;
+            width: 50px;
+            height: 50px;
+            float: left;
+            margin: 10px;
+			margin-top: 3px;
+        }
+        
+        .footer p {
+            left: 40%;
+            width:70%;
+            position: relative;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 90%;
+            line-height: 1em;
+            margin-top: 11px;
+        }
+
+		body{
+			background-repeat:no-repeat;
+			background-size:auto;
+		}
+
+    </style>
+</head>
+
+<body>
+	{% if user.username %}
+ <nav class="top-bar">
+        <div class="wrap">
+
+            <div class="top-bar-left">
+                <img src="/static/biglogo.png" style="float:left;">
+            </div>
+            <div class="top-bar-right">
+                <div>
+                    <p align="right">{{user.username}}님 반갑습니다.</p>
+                </div>
+                <div>
+                    <ul class="menu" id="menu_area">
+                        <li id="dbhome"><a href="/article">Article_HOME</a></li>
+                        <li id="taghome"><a href="/tagList?current_page=1">TAG_HOME</a></li>
+                        <li><a href="/accounts/logout">로그아웃</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <div id="wrap">
+
+
+        <div class="row">
+            <div class="center , block" style="margin-top:2%">
+                <section class="webdesigntuts-workshop">
+                    <form action="" method="">
+                        <input placeholder="tag keyword" type="text" id="tagkeyword" autocomplete="off">
+						<input type="text" style="display:none;" />
+                        <button type="button" class="button" onclick="tag_search();"><b>Search</b></button>
+						<button type="button" class="button" onclick="location.href='/tagBody?id='"><b>All Tags</b></button>
+                    </form>
+                </section>
+            </div>
+
+        </div>
+			<input type="hidden" id="pressid" value="">
+            <div class="left" style="margin-top:3%">
+				<div class="small-2 columns">
+                <h1>Tag List</h1>
+				</div>
+				<ul class="dropdown menu" data-dropdown-menu>
+  					<li>
+    					<a id="pressmenu">언론사</a>
+    						<ul class="menu">
+								{% if presses %}
+								{% for press in presses %}
+      								<li id="{{press}}" onclick="tag_search(this.id)"><a href="#">{{press}}</a></li>
+								{% endfor %}
+								{% endif %}
+    						</ul>
+  					</li>
+				</ul>
+	
+                <table>
+                    <tr>
+						<th>Article</th>
+						<th>Press</th>
+                        <th>Subject</th>
+                        <th>Object</th>
+                        <th>Verb</th>
+                        <th>What/How</th>
+                    </tr>
+                    {% if contacts %} {% for contact in contacts %}
+                    <tr>
+                        <td>
+                            <a href="articleBody?id={{contact.aid}}">
+							Move
+							</a>
+                        </td>
+                        <td>
+                            {{contact.apress}}
+						</td>	
+                        <td>
+							<!--
+                            <a href="tagBody?id={{contact.asubject}}">
+							-->
+							{{contact.asubject}}
+							</a>
+                        </td>
+                        <td>
+							<!--
+                            <a href="tagBody?id={{contact.aobejct}}">
+							-->
+							{{contact.aobejct}}
+							</a>
+                        </td>
+                        <td>{{contact.averb}}</td>
+                        <td>{{contact.aetc}}</td>
+                    </tr>
+                    {% endfor %} {% else %}
+                    <p>No tags are available.</p>
+                    {% endif %}
+                </table>
+                <div class="center">
+                    <ul class="page">
+                        <li>
+                            {% if contacts.has_previous %}
+                            <a href="tagList?current_page={{contacts.previous_page_number}}">«</a> {% endif %}
+                        </li>
+                        <li>
+                            <a>{{contacts.number}} of {{contacts.paginator.num_pages}}</a>
+                        </li>
+                        <li>
+                            {% if contacts.has_next %}
+                            <a href="tagList?current_page={{contacts.next_page_number}}">»</a> {% endif %}
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+ <footer style="bottom:0">
+        <div class="wrap row small-up-1 medium-up-3">
+            <div class="column">
+                <h4>Contact Info</h4>
+                <hr>
+                <p> 한양대학교 공과대학 컴퓨터소프트웨어학과</p>
+                <p> 데이터베이스 연구실</p>
+                <a href="http://db.hanyang.ac.kr">(홈페이지 가기)</a></br>
+                <p><span> 서울특별시 성동구 왕십리로222 ITBT관 </span></p>
+                <p>02-2220-4458</p>
+            </div>
+            <div class="column">
+                <h4>Site Map</h4>
+                <hr>
+                <a href="/article"><span>Article List</span></a></br>
+                <a href="/tagList?current_page=1"><span>Tag List</span></a>
+            </div>
+            <div class="column">
+                <h4>Cooperation</h4>
+                <hr>
+                <a href="#" onclick="window.open('http://software.hanyang.ac.kr');">
+                    <img src="/static/hanyanglogo.png"></a><br>
+                <a href="#" onclick="window.open('http://socio-info.hanyang.ac.kr/');">
+                    <img src="/static/socio.png"></a><br>
+                <a href="#" onclick="window.open('http://www.nrf.re.kr/');">
+                    <img src="/static/korea.png"></a>
+            </div>
+        </div>
+    </footer>
+
+	{% else %}
+		 <div class="expanded row">
+        	<h2 style="text-align:center;margin-top:10%;color:white;"><a href="/accounts/login/">로그인</a>하세요.</h4>
+    	</div>
+    {% endif %}
+		
+
+</body>
+
+<script>
+    $(document).foundation();
+</script>
+
+<script>
+    function tag_search(press) {
+		$('#pressid').val(press);
+        $.ajax({
+            type: 'POST',
+            url: 'tagkeyword',
+            data: {
+                keyword: $('#tagkeyword').val(),
+				press:press,
+            },
+            success: function (resp) {
+                $('.left').html(resp)
+            },
+            error: function (request, status, error) {
+                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+            }
+        });
+
+    }
+
+    function next_page() {
+        $.ajax({
+            type: 'GET',
+            url: 'tagkeyword',
+            data: {
+                keyword: $('#tagkeyword').val(),
+				press:$('#pressid').val(),
+                page: $('#next').val(),
+            },
+            success: function (resp) {
+                $('.left').html(resp)
+            }
+        });
+    }
+
+    function previous_page() {
+        $.ajax({
+            type: 'GET',
+            url: 'tagkeyword',
+            data: {
+                keyword: $('#tagkeyword').val(),
+				press:$('#pressid').val(),
+                page: $('#previous').val(),
+            },
+            success: function (resp) {
+                $('.left').html(resp)
+            }
+        });
+    }
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,84 @@
+{% load staticfiles %}
+
+<div class="article_area">
+
+                            <table>
+                                <tr>
+                                    <th>url</th>
+                                    <th>tag</th>
+                                    <th>title</th>
+                                    <th>press</th>
+                                    <th>date</th>
+                                    <th>class</th>
+                                    <th>subClass</th>
+                                </tr>
+
+                                {% if contacts %}
+                                    {% for contact in contacts %}
+                                                <tr>
+                                                <td>
+                                                        <a href="{{contact.nUrl}}">
+                                                                Move to article
+                                                                        </a>
+                                                </td>
+                                                <td>
+                                                {% for tag in tags %}
+                                                   
+                                                    {% if tag.aid ==  contact.id %}
+                                                        ✔
+                                                    {% endif %}
+                                                {% endfor %}
+                                                </td>
+                                                <td>
+                                                        <a href="articleBody?id={{contact.id}}">
+                                                                        {{contact.title}}
+                                                                        </a>
+                                                </td>
+                                                <td>{{contact.press}}</td>
+                                                <td>{{contact.aDate}}</td>
+                                                <td>{{contact.nClass}}</td>
+                                                <td>{{contact.subClass}}</td>
+                                                </tr>
+
+                                    {% endfor %}
+                                                                {% else %}
+                                                <p>No articles are available.</p>
+                                        {% endif %}
+                        </table>
+                        <br>
+                        <div class="center">
+				{% if contacts.has_previous %}
+				    <input type="hidden" id="previous" value={{contacts.previous_page_number}}>
+				{% endif %}
+				{% if contacts.has_next %}
+				    <input type="hidden" id="next" value={{contacts.next_page_number}}>
+				{% endif %}
+<!--
+                            <input type="hidden" id="pagelistnum" value="{{pagelistnum}}">
+                            <input type="hidden" id="nextlistnum" value="{{nextpagelist}}">
+                            <input type="hidden" id="prevlistnum" value="{{prevpagelist}}">
+-->
+                            <ul class="pagination text-center" role="navigation" aria-label="Pagination">
+                                {% if contacts.has_previous %}
+                                    <li class="pagination-previous"><a onclick="prev_page" aria-label="Previous page">Previous <span class="show-for-sr">page</span></a></li>
+                                {% else %}
+                                    <li class="pagination-previous disabled">Previous <span class="show-for-sr">page</span></li>
+                                {% endif %}
+                                    {% for num in pages_list %}
+                                        {% if num == contacts.number %}
+                                            <li class="current"><span class="show-for-sr">You're on page</span>{{num}}</li>
+                                        {% else %}
+					    <li><a href="keyword?current_page={{num}}&keyword={{keyword}}">{{num}}</a></li>
+					    <!--
+                                            <li><a onclick="move_page({{num}})">{{num}}</a></li>
+					    -->
+                                        {% endif %}
+                                    {% endfor %}
+                                <li class="pagination-next"><a onclick="next_page" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+                                <li> Total page: {{contacts.paginator.num_pages}}</li>
+                            </ul>
+
+
+                        </div>
+                    </div>
+

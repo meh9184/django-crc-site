@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+ {% load staticfiles %}
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://d3js.org/d3.v3.js"></script>
+<link rel="stylesheet" href="{% static 'foundation.min.css' %}"></link>
+<link rel="stylesheet" href="{% static 'range.css' %}"></link>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script type='text/javascript' src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"> </script>
+	<style>
+		.node {
+    		stroke: #fff;
+    		stroke-width: 1.5px;
+		}
+		.link {
+    		stroke: #999;
+    		stroke-opacity: .6;
+		}
+		.threshbar {
+    		color: #1ABC9C;
+    		font-size: 20px;
+    		font-family: "Helvetica";
+		}
+		.input-group-label {
+			color:white;
+			background-color:#2497E3;
+		}
+		#divforsvg {
+            margin-left :5%;
+            height: 700px;
+            width: 1500px;
+            border:2px solid #000;
+            overflow: scroll;
+        }
+		.d3-tip {
+    		line-height:1;
+    		color: #1ABC9C;
+		}
+		.link-d3-tip {
+    		line-height:0.5;
+    		color: #1ABC9C;
+		}
+		.informationsec {
+			color: #1ABC9C;
+		}
+	</style>
+</head>
+
+
+<body>
+
+	<div class="row align-center">
+		<div class="large-7 columns">
+			<h3 id = "id" style="text-align:center">{{id}}</h3>
+   			<div class="input-group">
+				<input class="input-group-field" placeholder="NodeName" id="search" type="text" autocomplete="off">
+					<div class="input-group-button">
+    					<button type="button" class="button" onclick="searchNode()">Search</button>
+					</div>
+			</div>
+		</div>
+		<div class="row align-center">
+			<div class="small-9 columns">
+    			<h2 class="threshbar"> Link weight 0 ~ 10</h2><label id="weightnum">0</label>
+				<input type="range" id="thresholdSliderA" name="points" value = 0 min="0" max="10" onchange="threshold(this.value)">
+			</div>
+		</div>
+		<div class="row align-center">
+			<div class="small-9 columns">
+    			<h2 class="threshbar" id="timeInfo"> </h2><label id="datenum">2015-05-21</label>
+				<input type="range" id="thresholdSliderB" name="points" value = "2" min="2" max="3" onchange="dateThreshold(this.value)">
+			</div>
+			<div class="small-4 columns">
+				<h5 class="informationsec">Node Info.</h5>
+    			<label id="nodename">Selected Node Name: Unselected</label>
+    			<label id="nodeweight">Selected Node Weight: Unselected</label>
+			</div>
+			<div class="small-5 columns">
+				<h5 class="informationsec">Link Info.</h5>
+    			<label id="linkNode">Selected Link: Unselected</label>
+    			<label id="linkweight">Selected Link Weight: Unselected</label>
+			</div>
+			<div class="small-3 columns">
+				<h5 class="informationsec">Link Detail Info.</h5>
+    			<label id="linkDetail">Unselected</label>
+			</div>
+		</div>
+	</div>
+	
+	<div id="divforsvg">
+		 <svg id = "canv" width="2000" height="2000"></svg>
+	</div>
+</body>
+
+<script>
+document.oncontextmenu = function (e) {
+   alert("오른쪽버튼을 이용할 수 없습니다.");
+   return false;
+  }
+var tid = document.getElementById("id").innerHTML;
+var url="http://166.104.144.67:50001/datatest?id="+tid;
+if (tid ==""){
+    document.getElementById("id").innerHTML="전체 태그";
+}
+
+//Read the data from the django server
+;(function($){
+    test('2015-05-21');
+})(jQuery);
+
+function ajaxReturn(date){
+    return $.ajax({
+        type: "POST",
+        url: url,
+		data: {
+			aaDate:date,
+		},
+        async: false,
+        dataType:'json',
+        });
+}
+var tempdata;
+var returnData;
+
+function test(date){
+	console.log("testdate",date);
+    ajaxReturn(date).done(function(data){
+        returnData = data;
+	//console.log(data);
+    });
+}
+
+graph = returnData;
+autocomSearch();
+
+
+var tempMaxDay = graph.day[0].articleDate__max;	
+var tempMinDay = graph.day[1].articleDate__min;	
+var maxDay = tempMaxDay.substr(0,10);
+var minDay = tempMinDay.substr(0,10);
+var arr1 = maxDay.split('-');
+var arr2 = minDay.split('-');
+var dat1 = new Date(arr1[0],arr1[1],arr1[2]);
+var dat2 = new Date(arr2[0],arr2[1],arr2[2]);
+var btMs = dat1.getTime() - dat2.getTime();
+var btDay = btMs/(1000*60*60*24);
+
+console.log(maxDay);
+console.log(minDay);
+console.log(btDay);
+document.getElementById("timeInfo").innerHTML = "Period of Time " + minDay + " ~ " + maxDay;
+document.getElementById("thresholdSliderB").max = btDay;
+
+
+var edges = [];
+var graphRec = [];
+
+//Function for reformatting links to use id as index
+graph.links.forEach(function(e) {
+    var sourceNode = graph.nodes.filter(function(n) {
+        return n.id === e.source;
+    })[0],
+        targetNode = graph.nodes.filter(function(n) {
+            return n.id === e.target;
+        })[0];
+
+    edges.push({
+        source: sourceNode,
+        target: targetNode,
+        value: e.value*2,
+		verb: e.verb
+    });
+
+    graphRec.push({
+        source: sourceNode,
+        target: targetNode,
+        value: e.value*2,
+		verb: e.verb
+    });
+	
+});
+
+
+
+//Constants for the SVG
+var width = 1800,
+    height = 850;
+
+//Set up the colour scale
+var color = d3.scale.category20();
+
+//Set up the force layout
+var force = d3.layout.force()
+    .charge(-1500)
+    .linkDistance(400)
+    .size([width, height]);
+
+//Append a SVG to the body of the html page. Assign this SVG as an object to svg
+var svg = d3.select("svg")
+    .attr("width", width)
+    .attr("height", height)
+	.call(d3.behavior.zoom().on("zoom", function () {
+    svg.attr("transform", "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")")
+  })).on("dblclick.zoom",null)
+  .append("g");
+
+//Creates the graph data structure out of the json data
+force.nodes(graph.nodes)
+    .links(edges)
+    .start();
+
+//Set up tooltip
+var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function (d) {
+		document.getElementById("nodename").innerHTML="Selected Node Name: "+d.id;
+		document.getElementById("nodeweight").innerHTML="Selected Node Weight: "+d.weight;
+    	return  "Node Weight: "+d.weight;
+	})
+	svg.call(tip);
+
+var linktip = d3.tip()
+    .attr('class', 'link-d3-tip')
+    .offset([-10, 0])
+    .html(function (d) {
+		document.getElementById("linkweight").innerHTML="Selected Link Weight: "+d.value;
+		document.getElementById("linkDetail").innerHTML=d.verb;
+		document.getElementById("linkNode").innerHTML="Selected Link: ("+ d.source.id + ") ~ (" + d.target.id +")";
+		console.log(d);
+    	return  "Link Weight: " + d.value;
+	})
+	svg.call(linktip);
+
+//Create all the line svgs but without locations yet
+var link = svg.selectAll(".link")
+    .data(edges)
+    .enter().append("line")
+    .attr("class", "link")
+    .style("stroke-width", function (d) {
+    return d.value;
+	})
+	.on('click', linktip.show)
+	.on('mouseout', linktip.hide);
+
+//Do the same with the circles for the nodes - no 
+var node = svg.selectAll(".node")
+    .data(graph.nodes)
+    .enter().append("g")
+    .attr("class", "node")
+    .call(force.drag);
+
+node.append("circle")
+    .attr("r", function(d) {return (Math.sqrt(d.weight))*4})
+    .style("fill", function (d) {
+    return color(d.group);
+	})
+	.on('click', tip.show)
+	.on('mouseout', tip.hide)
+	.on('dblclick', connectedNodes);
+
+
+node.append("text")
+      .attr("dx", 10)
+      .attr("dy", ".35em")
+      .text(function(d) { return d.id;})
+	  .style("stroke","black")
+	  .style("font-family","바탕");
+
+
+//Movement position
+force.on("tick", function () {
+    link.attr("x1", function (d) {
+        return d.source.x;
+    })
+        .attr("y1", function (d) {
+        return d.source.y;
+    })
+        .attr("x2", function (d) {
+        return d.target.x;
+    })
+        .attr("y2", function (d) {
+        return d.target.y;
+    });
+    d3.selectAll("circle").attr("cx", function (d) {
+        return d.x;
+    })
+        .attr("cy", function (d) {
+        return d.y;
+    });
+    d3.selectAll("text").attr("x", function (d) {
+        return d.x;
+    })
+        .attr("y", function (d) {
+        return d.y;
+    });
+});
+
+var tempgraph;
+function dateThreshold(adate) {
+	//display the value of a slider
+	document.getElementById("thresholdSliderA").value = 0;
+	document.getElementById("weightnum").innerHTML = 0;	
+
+	
+	var dat3 = new Date(arr2[0],arr2[1]-1,arr2[2]);
+	
+	// reformatting the date
+		var tempdat3 = dat3;
+		var adateint = parseInt(adate);
+		tempdat3.setDate(adateint+20);
+		var newDate = tempdat3.toJSON();
+		newDate=newDate.toString();
+
+	
+	// slice the date for reformatting
+	var newfulldate = newDate.substr(0,10);
+		console.log("fulldate",newfulldate)
+	document.getElementById("datenum").innerHTML = newfulldate;	
+	
+	var prevEdges = $.extend(true,{},edges);
+	var count = 0;
+	var cc;
+	for (cc in prevEdges) {
+    	if (prevEdges.hasOwnProperty(cc)) {
+        	count++;
+    	}
+	}	
+	console.log("prev edges num",count);	
+
+	//clear exit nodes and links
+    edges.splice(0, edges.length);
+    graph.nodes.splice(0, graph.nodes.length);
+	graphRec.splice(0, graphRec.length);
+	console.log(tempgraph);
+	if (tempgraph != undefined){
+		tempgraph.nodes.splice(0, tempgraph.nodes.length);
+		tempgraph.links.splice(0, tempgraph.links.length);
+	}
+	
+	//get data with specific date
+    test(newfulldate);
+	tempgraph = returnData;
+
+    //Function for reformatting links to use id as index with new data
+tempgraph.links.forEach(function(e) {
+    var sourceNode = tempgraph.nodes.filter(function(n) {
+        return n.id === e.source;
+    })[0],
+        targetNode = tempgraph.nodes.filter(function(n) {
+            return n.id === e.target;
+        })[0];
+	var prevFlag = 0;
+	for (var i=0; i<count; i++){
+		if (prevEdges[i].source.id == sourceNode.id && prevEdges[i].target.id == targetNode.id){
+	    	//console.log(prevEdges[i].source.id, prevEdges[i].target.id, sourceNode.id, targetNode.id);
+			prevFlag = 1;
+		} else if (prevEdges[i].source.id == targetNode.id && prevEdges[i].target.id == sourceNode.id){
+	    	//console.log(prevEdges[i].source.id, prevEdges[i].target.id, sourceNode.id, targetNode.id);
+			prevFlag = 1;
+		}
+	}
+
+    edges.push({
+        source: sourceNode,
+        target: targetNode,
+        value: e.value*2,
+		verb: e.verb,
+		zflag: prevFlag
+    });
+
+    graphRec.push({
+        source: sourceNode,
+        target: targetNode,
+        value: e.value*2,
+		verb: e.verb,
+		zflag: prevFlag
+    });
+
+});
+	console.log("prev edges num",count);	
+	console.log("current edges num",edges.length);	
+    restartdate();
+}
+
+//Restart the visualisation after date changed
+function restartdate() {
+
+	document.getElementById("nodename").innerHTML="Selected Node Name: Unselected";
+	document.getElementById("nodeweight").innerHTML="Selected Node Weight: Unselected";
+	document.getElementById("linkweight").innerHTML="Selected Link Weight: Unselected";
+	document.getElementById("linkNode").innerHTML="Selected Link: Unselected";
+	document.getElementById("linkDetail").innerHTML="Unselected";
+
+	//new link
+    link = link.data(edges);
+	linktip.hide();
+	link.exit().remove();
+    link.enter().insert("line", ".node").attr("class", "link").style("stroke-width", function (d) {
+    return d.value;})
+	.on('click', linktip.show)
+	.on('mouseout', linktip.hide);
+    
+	//new node
+	node = node.data(graph.nodes);
+	tip.hide();
+	graph = tempgraph;
+	autocomSearch();
+	defineNeighbor();
+	node.exit().remove();
+	node = svg.selectAll(".node")
+    .data(tempgraph.nodes)
+    .enter().append("g")
+    .attr("class", "node")
+    .call(force.drag);
+
+	node.append("circle")
+    .attr("r", function(d) {return (Math.sqrt(d.weight))*4;})
+    .style("fill", function (d) {
+    return color(d.group);
+	})
+	.on('click', tip.show)
+	.on('mouseout', tip.hide)
+	.on('dblclick', connectedNodes);
+	
+
+	node.append("text")
+      .attr("dx", 10)
+      .attr("dy", ".35em")
+      .text(function(d) { return d.id;})
+	  .style("stroke","black")
+	  .style("font-family","바탕");
+	
+	force
+		.nodes(tempgraph.nodes)
+		.links(edges)
+		.start();
+	
+	prevLinks();
+}
+
+
+function prevLinks(){
+	var templink = svg.selectAll(".link");
+ 	var selectedLink = templink.filter(function (d, i) {
+            return d.zflag != 1;
+        });
+	console.log(selectedLink[0].length);
+	console.log(selectedLink);
+	if (selectedLink[0].length != 0){
+ 		selectedLink.style("stroke", "#F29661");
+	}else{
+ 		templink.style("stroke", "#8C8C8C");
+		console.log("No link added");
+	}
+}
+	
+
+//Filtering links by threshold
+function threshold(thresh) {
+	document.getElementById("weightnum").innerHTML = thresh;	
+    edges.splice(0, edges.length);
+		for (var i = 0; i < graphRec.length; i++) {
+			if (graphRec[i].value > thresh) {
+				edges.push(graphRec[i]);
+			}
+		}
+    restart();
+}
+
+
+//Restart the visualisation after any node and link changes
+function restart() {
+	link = link.data(edges);
+	link.exit().remove();
+	link.enter().insert("line", ".node").attr("class", "link").style("stroke-width", function (d) {
+    return d.value;});
+	if(tempgraph == undefined){
+		node = node.data(graph.nodes);
+	}else{
+		node = node.data(tempgraph.nodes);
+	}
+	node.enter().insert("circle", ".cursor").attr("class", "node").attr("r", function(d) {return (Math.sqrt(d.weight))*4;}).style("fill", function (d) {return color(d.group);}).call(force.drag);
+	force.start();
+}
+
+
+
+////////////////////Autocomplete array for search
+function autocomSearch() {
+var optArray = [];
+for (var i = 0; i < graph.nodes.length - 1; i++) {
+    optArray.push(graph.nodes[i].id);
+}
+optArray = optArray.sort();
+$( "#search" ).autocomplete({
+  source: function( request, response ) {
+          var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
+          response( $.grep( optArray, function( item ){
+              return matcher.test( item );
+          }) );
+      }
+});
+}
+/////////////////////////////////////////////////
+
+
+///////////////////Search a specific node
+
+function searchNode() {
+    //find the node
+    var selectedVal = document.getElementById('search').value;
+    var node = svg.selectAll(".node");
+    if (selectedVal == "") {
+		alert("검색어를 입력하십시요.");
+    } else {
+        var selected = node.filter(function (d, i) {
+            return d.id != selectedVal;
+        });
+        selected.style("opacity", "0");
+        var link = svg.selectAll(".link")
+        link.style("opacity", "0");
+        d3.selectAll(".node, .link").transition()
+            .duration(5000)
+            .style("opacity", 1);
+    }
+}
+///////////////////////////////////////
+
+
+////////////////////Highliting neighbor
+//Toggle stores whether the highlighting is on
+var toggle = 0;
+//Create an array logging what is connected to what
+var linkedByIndex = {};
+function defineNeighbor(){
+for (i = 0; i < graph.nodes.length; i++) {
+   	linkedByIndex[graph.nodes[i] + "," + graph.nodes[i]] = 1;
+};
+edges.forEach(function (d) {
+    linkedByIndex[d.source.id + "," + d.target.id] = 1;
+});
+}
+
+//This function looks up whether a pair are neighbours
+function neighboring(a, b) {
+    return linkedByIndex[a.id + "," + b.id];
+}
+function connectedNodes() {
+    if (toggle == 0) {
+        //Reduce the opacity of all but the neighbouring nodes
+        d = d3.select(this).node().__data__;
+        node.style("opacity", function (o) {
+            return neighboring(d, o) | neighboring(o, d) ? 1 : 0.1;
+        });
+		
+        var selected = node.filter(function (n, i) {
+            return n.id == d.id;
+		});
+		selected.style("opacity", "1");
+
+        link.style("opacity", function (o) {
+            return d.id==o.source.id | d.id==o.target.id ? 1 : 0.1;
+        });
+        //Reduce the op
+        toggle = 1;
+    } else {
+        //Put them back to opacity=1
+        node.style("opacity", 1);
+        link.style("opacity", 1);
+        toggle = 0;
+    }
+}
+defineNeighbor();
+///////////////////////////////////////
+
+</script>
+</html>

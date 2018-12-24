@@ -1,0 +1,307 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SIC</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Plugin CSS -->
+    <link href="{% static 'vendor/magnific-popup/magnific-popup.css' %}" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="{% static 'css/creative.css' %}" rel="stylesheet">
+
+    <!-- CRC Custom CSS-->
+    <link type="text/css" href="{% static 'mainpage.css' %}" rel="stylesheet">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top">
+
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">SIC</a>
+				{% if user.username %}
+                <a class="navbar-brand page-scroll" href="/home">Articles Site</a>
+                <a class="navbar-brand page-scroll" href="http://166.104.144.67:50001/pdp/visualizer">PublicData Site</a>
+                <a class="navbar-brand page-scroll" href="http://166.104.140.75:62000/Emotional_Analyzation/EA/main.html">SNS Data Site</a>
+				{% else %}
+                <a class="navbar-brand btnLogin" href="">Articles Data Site</a>
+                <a class="navbar-brand btnLogin" href="">PublicData Site</a>
+                <a class="navbar-brand btnLogin" href="">SNS Data Site</a>
+				{% endif %}
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="#about">About</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#services">Services</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#notice">Notice</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#cooperation">Cooperation</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                    <li>
+						{% if user.username %}
+                        <a href="/accounts/logout">Logout</a>
+						{% else %}
+                        <a class="btnLogin" href="#">Login</a>
+						{% endif %}
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1 id="homeHeading">Socio-Informatics Center</h1>
+                <hr>
+                <p>BASED ON ARTICLES DATA& SNS DATA& PUBLIC DATA<br /><strong>VISUALIZATION & ANALYSIS OF INFORMATION</strong></p>
+                <br/>
+                <a href="#about" class="btn btn-primary btn-xl page-scroll">More Info</a>
+				{% if user.username %}
+                <a href="/accounts/logout" class="btn btn-primary btn-xl">Logout</a>
+				<br>
+				<br>
+				<p>{{user.username}}님 반갑습니다.</p>
+				{% else %}
+                <a href="#" class="btn btn-primary btn-xl btnLogin">Login</a>
+				{% endif %}
+            </div>
+        </div>
+    </header>
+
+    <section class="bg-primary" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">Introduction of SIC</h2>
+                    <hr class="light">
+                    <p class="text-faded">소시오 인포매틱스 센터는 한국 연구재단과 한양대학교 및 많은 기관들의 협력을 바탕으로 사회과학과 공학의 초학제적 연구를 진행한다. 본 센터는 초학제적 연구를 기반으로 사회 문제를 이해·분석·해결하는데 연구 목적을 두고 있다.</p>
+                    <a href="http://socio-info.hanyang.ac.kr/wordpress/" class="page-scroll btn btn-default btn-xl sr-button">Move to the Center Homepage</a> &nbsp &nbsp &nbsp
+                    <a href="#services" class="page-scroll btn btn-default btn-xl sr-button">Show Service</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">At Our Service</h2>
+                    <hr class="primary">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-lg-offset-1 col-md-offset-1 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x text-primary sr-icons"><img src="../../static/img/data1.png" width="60" height="60"/></i>
+                        <h3>Articles Data</h3> <!--h3 tag에 keyword(기술이름) 을 작성.-->
+                        <p class="text-muted">Able to Search & Use Millions of Articles Data</p> <!--해당 기술 설명-->
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x text-primary sr-icons"><img src="../../static/img/data2.png" width="60" height="60" /></i>
+                        <h3>SNS Data</h3>
+                        <p class="text-muted">Able to Search & Access Millions of SNS Data</p>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x text-primary sr-icons"><img src="../../static/img/data3.png" width="60" height="60" /></i>
+                        <h3>Data Curation</h3>
+                        <p class="text-muted">CRC Curation Tool Provides the Simple Way of Extracting Vital Information from Millions of Articles Data</p>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x text-primary sr-icons"><img src="../../static/img/data4.png" width="60" height="60" /></i>
+                        <h3>Visualization</h3>
+                        <p class="text-muted">Provides A Variety of Visualization Tools Which Includes Network Graph and Map Visualization</p>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x text-primary sr-icons"><img src="../../static/img/data5.png" width="60" height="60" /></i>
+                        <h3>Analysis</h3>
+                        <p class="text-muted">Helps to Use Analysis Tool and Provides Analysis Data</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<br/><br/>
+        <div class="col-lg-8 col-lg-offset-2 text-center">
+			{% if user.username %}
+        	<a href="/home" class="btn btn-primary btn-xl">articles data site</a> &nbsp &nbsp &nbsp
+        	<a href="http://166.104.144.67:50001/pdp/visualizer" class="btn btn-primary btn-xl">publicdata site</a> &nbsp &nbsp &nbsp
+        	<a href="http://166.104.140.75:62000/Emotional_Analyzation/EA/main.html" class="btn btn-primary btn-xl">sns data site</a>
+			{% else %}
+        	<a href="" class="btn btn-primary btn-xl btnLogin">articles data site</a> &nbsp &nbsp &nbsp
+        	<a href="" class="btn btn-primary btn-xl btnLogin">publicdata site</a> &nbsp &nbsp &nbsp
+        	<a href="" class="btn btn-primary btn-xl btnLogin">sns data site</a>
+			{% endif %}
+			
+		</div>
+    </section>
+
+    <section id="notice">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 text-center">
+                <h2 class="section-heading">Notice</h2>
+                <hr class="primary light">
+            </div>
+            <div id="board" class="col-md-5 col-md-offset-1">
+                <!-- board -->
+                <!--<h3>주요 알림<span><a href=""><img align="right" src="img/plus.png" width="20" height="20"/></a></span></h3>-->
+                <h3>주요 알림</h3>
+				<ul>
+                    <li class="boardItem">
+                        <a class="boardTitle" href="">웹페이지 업데이트 완료 안내</a>
+                        <span class="date">2016.10.21</span>
+                        <p class="detailInfo">소시오 인포매틱스 센터 연구 관련 홈페이지 통합을 위한 사이트 업데이트를 완료 하였습니다. 감사합니다. </p>
+                    </li>
+                    <li class="boardItem">
+                        <a class="boardTitle" href="">웹페이지 업데이트 작업 안내</a>
+                        <span class="date">2016.09.02</span>
+                        <p class="detailInfo">소시오 인포매틱스 센터 연구 관련된 홈페이지를 통합하기 위한 웹 사이트 업데이트를 진행할 예정입니다. 업데이트 작업일정은 2016.09.02 ~ 2016.11.01 입니다. 감사합니다.</p>
+                    </li>
+                </ul>
+            </div>
+            <div id="schedule" class="col-md-4 col-md-offset-1">
+                <!--<h3>주요 일정<span><a href="" class="more"><img align="right" src="img/plus.png" width="20" height="20"/></a></span></h3>-->
+                <h3>주요 일정</h3>
+                <ul>
+                    <li>
+                        <div>
+                            <p class="date">2017/02/08</p>
+                            <p>CRC 평가 발표</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <p class="date">2017/01/19</p>
+                            <p>소시오 인포매틱스 센터 월 정기 워크샵 (ITBT관)</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <p class="date">2016/12/27</p>
+                            <p>소시오 인포매틱스 센터 월 정기 워크샵 (ITBT관)</p>
+                        </div>
+					</li>
+					<li>
+                        <div>
+                            <p class="date">2016/12/21~2016/12/23</p>
+                            <p>소시오 인포매틱스 센터 년 정기 워크샵 (한국정보과확회)</p>
+                        </div>
+                    </li>
+                </ul>
+            </div><!-- board end-->
+        </div>
+    </section><!-- Notice -->
+
+    <section id="cooperation">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">Cooperation</h2>
+                    <hr class="primary">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <img src="../../static/img/logo/entireLogo.png" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">Contact</h2>
+                    <hr class="primary light">
+<p><a href="http://db.hanyang.ac.kr">한양대학교 공과대학 컴퓨터소프트웨어학과<br />데이터베이스 연구실(홈페이지 이동)</a></p>
+                    <p>서울특별시 성동구 왕십리로222 ITBT관<br/>
+                    ITBT, 222 Wangsimni-ro, Sageun-dong, Seongdong-gu, Seoul</p>
+                    <ul id="contactList" class="list-unstyled">
+                        <li><i class="fa fa-phone fa-fw"></i>교수 연구실 : 02-2220-1158</li>
+                        <li><i class="fa fa-phone fa-fw"></i>대학원 연구실 : 02-2220-4458</li>
+                        <li><i class="fa fa-envelope-o fa-fw"></i>chajh@hanyang.ac.kr</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>Copyright &copy; Socio-Informatics Center 2015</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="{% static 'vendor/scrollreveal/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="{% static 'js/creative.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+</body>
+
+</html>

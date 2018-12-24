@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>{% block page_title %}login{% endblock %}</title>
+
+    <!-- jQuery load-->
+    <script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+
+    <!-- CSS load-->
+    <link rel="stylesheet" href="{% static 'css/loginForm.css' %}">
+</head>
+<body>
+
+    <!-- Where all the magic happens -->
+    <!-- LOGIN FORM -->
+    <div class="text-center" >
+        <div class="logo">login</div>
+        <!-- Main Form -->
+        <div class="login-form-1">
+            <form method="post" action="{% url 'login' %}" id="login-form" class="text-left">
+                {% csrf_token %}
+                <!-- action에 정보를 전송할 서버주소입력-->
+                <div class="login-form-main-message"></div><!--error msg, success msg를 전송하는 box-->
+                <div class="main-login-form">
+                    <div class="login-group">
+                        <table>
+                            <tr>
+                                <div>
+                                    <td><label for="lg_username" class="sr-only"><strong>Username</strong></label></td>
+                                    <td class="inputColumn">{{form.username}}</td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><img src="../../static/horizonBar.png" /></td>
+
+                            </tr>
+                            <tr>
+                                <div>
+                                    <td><label for="lg_password" class="sr-only"><strong>Password</strong></label></td>
+                                    <td class="inputColumn">{{form.password}}</td>
+                                </div>
+                            </tr>
+                        </table>
+                        <button type="submit" class="login-button"><strong>></strong></button>
+                    </div>
+                </div>
+            </form>
+            <div class="etc-login-form">
+                <p>new user? <a href="#" id="btnRegister">create new account</a></p>
+            </div>
+            <div class="error">
+                {% if form.errors %}
+                <br>
+                <br>
+                <p>ID나 비밀번호가 일치하지 않습니다.</p>
+                {% endif %}
+
+                {% if next %}
+                {% if user.is_authenticated %}
+                <p>권한이 없는 페이지에 접근하였으니, 권한이 있는 계정으로 로그인하세요.</p>
+                {% else %}
+                <p>이 페이지를 보려면 로그인을 해야 합니다.</p>
+                {% endif %}
+                {% endif %}
+            </div>
+        <!-- end:Main Form -->
+    </div> <!-- end Login Form-->
+
+    <script type="text/javascript">
+   		$(function () {
+            /* CRC Custom script*/
+            function openNotice(event) {
+                event.preventDefault();
+                var popOption = "width=550, height=500, resizable=yes, scrollbars=yes, status=yes, location=no, top=100, left=300;";
+                window.open('/serviceNotice', "", popOption);
+            }
+
+            $('#btnRegister').on('click', openNotice); //serviceNotice.html을 open.
+        });
+    </script>
+</body>
+</html>

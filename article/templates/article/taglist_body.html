@@ -1,0 +1,26 @@
+<thead>                                                                     
+    <th>주어</th>
+    <th>목적어</th>
+    <th>동사</th>
+    <th>무엇을/어떻게</th>
+    <th>자동:0/직접:1  (S/O/V/E)</th>
+        <th>해당문장</th>
+    <th>수정/삭제</th>
+</thead>
+
+<tbody>                  
+    {% for tag in tags %}
+    <tr class="{{tag.id}}tr">
+        <td class="{{tag.id}}">{{tag.asubject}}</td>
+        <td class="{{tag.id}}">{{tag.aobejct}}</td>
+        <td class="{{tag.id}}">{{tag.averb}}</td>
+        <td class="{{tag.id}}">{{tag.aetc}}</td>
+        <td>{{tag.subjectflag}} / {{tag.objectflag}} / {{tag.verbflag}} / {{tag.etcflag}}</td>
+                <td><button type="button" class="button" id="showsentence" onclick="showSentence({{tag.id}})">문장</br>보기</button></td>
+        <td class="{{tag.id}}td">
+            <button onclick="editTag({{tag.id}})" type="button" class="warning button {{tag.id}}btn">수정</button>
+            <button onclick="deleteTag({{tag.id}})" type="button" class="alert button {{tag.id}}btn">삭제</button></td>
+    </tr>
+    {% endfor %}
+</tbody>
+

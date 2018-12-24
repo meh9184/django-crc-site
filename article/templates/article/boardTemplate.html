@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8" />
+    <title>Bulletin Board</title>
+
+    <!-- Custom CSS-->
+    <link href="{% static 'css/board.css' %}" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <h4>Title<span class="date">2017.01.01</span></h4>
+    <p>Description Description Description</p>
+    <button>닫기</button>
+
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+    
+    <!-- CRC Custom-->
+    <script>
+        $(function () {
+            $('button').on('click', function () {
+                window.open("about:blank", "_self").close();
+            })
+
+            var el = window.opener.document.getElementsByClassName("activeItem")[0];
+            $(el).removeClass("activeItem");
+            var boardTitle = el.textContent; /*Title*/
+
+            var dateSpan = $(el).next();
+            var date = dateSpan.text(); /*Date*/
+
+            var detailInfoEl = $(dateSpan).parent().next();
+            var detailInfo = detailInfoEl.html(); /*Content*/
+            $('h4').html('<h4>' + boardTitle +'<span class="date">' +date +'</span></h4>');
+			$('p').html('<p>' + detailInfo + '</p>');
+        });
+    </script>
+</body>
+
+</html>

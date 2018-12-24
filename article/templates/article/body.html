@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<head>
+{% load staticfiles %}
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/themes/smoothness/jquery-ui.css">
+<script src="{% static 'jquery-2.2.3.min.js' %}"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="{% static 'foundation.min.js' %}"></script>
+<script type="text/javascript" charset="utf-8" src="{% static 'tagtoolutf.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'foundation.min.css' %}"></link>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+        .sentence span {
+            display: none;
+        }
+    
+    .inserting .deleteRow button {
+        display: none;
+    }
+	div.inset{
+		border-style: inset;
+	}
+	.statusMessage {
+		color: red;
+	}
+
+    </style>
+</head>
+<body>
+    {% if user.username %}
+    <div class="expanded row">
+        <div class="large-6 columns" id="newsbodytext">
+            <h2 id="atitle">{{contacts.title}}</h2>
+			<input id="aid" type="hidden" value = "{{contacts.id}}">
+			<input id="aDate" value = "{{contacts.aDate}}" disabled>
+			<input id="apress" type="hidden" value = "{{contacts.press}}">
+            <p>{{contacts.content}}</p>
+        </div>
+        <div class="large-6 columns" >
+			<br>
+			<br>
+			<br>			
+            <div id="copied-p" class="inset">좌측 글에서 드래그 하면 이곳의 내용이 변합니다</div>
+			<br>
+            <div class="row">
+                <div>*선택할 문장 요소를 누른 뒤 위쪽 글에서 드래그 하세요.*</div>
+                <table id="wordpartTable">
+                    <thead>
+                        <tr>
+                            <th class="ratio"> 태그 중복  검사</th>
+                            <th class="subject"><input type="radio" name="wordpart" value="subject" checked="checked"> 주어(.From)</th>
+                            <th class="object"><input type="radio" name="wordpart" value="object">목적어(.To)</th>
+                            <th class="verb"><input type="radio" name="wordpart" value="verb"> 동사</th>
+                            <th class="aetc"><input type="radio" name="wordpart" value="aetc"> 무엇을/어떻게</th>
+                            <th class="sentence">저장되는 문장</th>
+                            <th class="deleteRow">행 삭제</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tagtbody">
+                        <tr class="inserting">
+							<td>
+                    			<input type="radio" class="ratioflag" name="newratio" value="0" checked="checked">검사</br>
+                    			<input type="radio" class="ratioflag" name="newratio" value="1">무시</td>
+                            <td><textarea class="subject" placeholder="SUBJECT" rows="2" cols="25"></textarea>
+                    			<input type="radio" class="subjectflag" name="newsub" value="0" checked="checked">자동
+                    			<input type="radio" class="subjectflag" name="newsub" value="1">직접</td>
+
+                            <td><textarea class="object" placeholder="OBJECT" rows="2" cols="25"></textarea>
+                    			<input type="radio" class="objectflag" name="newobj" value="0" checked="checked">자동
+                    			<input type="radio" class="objectflag" name="newobj" value="1">직접
+</td>
+                            <td><textarea class="verb" placeholder="VERB" rows="2" cols="25"></textarea>
+                    			<input type="radio" class="verbflag" name="newverb" value="0" checked="checked">자동
+                    			<input type="radio" class="verbflag" name="newverb" value="1">직접</td>
+
+                            <td><textarea class="aetc"  placeholder="WHAT/HOW" rows="2" cols="25"></textarea>
+                    			<input type="radio" class="etcflag" name="newetc" value="0" checked="checked">자동
+                    			<input type="radio" class="etcflag" name="newetc" value="1">직접</td>
+
+                            <td class="sentence">
+                                <button type="button" class="button" name="viewSentence">문장보기</button></br>
+                    			<input type="radio" class="passiveflag" name="newpassive" value="0" checked="checked">능동</br>
+                    			<input type="radio" class="passiveflag" name="newpassive" value="1">수동
+								<span></span></td>
+
+                            <td class="deleteRow">
+                                <button type="button" class="button" name="deleteRow">삭제</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+			    <br>
+				<div>                                                                     
+                	<button type="button" class="success hollow button" name="addRow">완료/행추가</button>                
+                	<button type="button" class="success button" name="saveServer">서버에 저장</button>
+                	<p id="staMsg" class ="statusMessage"></p>                           
+                	<p class="help"></p>
+					<hr>
+            	</div>
+		</div>
+		<div class="saved_taglist">
+				<br>
+				<div class="row align-justify">
+				    <div class="column small-4">
+					<h5>저장된 태그 리스트</h5>
+				    </div>
+				    <div class="column small-6">
+					<h6 style="color:green;">*저장된 태그 수정시 주어/목적어/동사/기타 부분만 수정가능합니다. 그외 수정은 삭제후 다시 작성해야합니다.</h6>
+				    </div>
+				</div>
+				<table id="tagList">
+				<thead>                                                                               
+    <th>주어</th>                                                                     
+    <th>목적어</th>                                                                   
+    <th>동사</th>                                                                     
+    <th>무엇을/어떻게</th>                                                            
+    <th>0.자동/1.직접  (S/O/V/E)</th>
+	<th>해당문장</th>                                                                
+    <th>수정/삭제</th>                                                                     
+</thead>                                                                              
+<tbody>                                                                               
+    {% for tag in tags %}                                                             
+    <tr class="{{tag.id}}tr">                                                                             
+        <td class="{{tag.id}}">{{tag.asubject}}</td>                                                     
+        <td class="{{tag.id}}">{{tag.aobejct}}</td>                                                      
+        <td class="{{tag.id}}">{{tag.averb}}</td>                                                        
+        <td class="{{tag.id}}">{{tag.aetc}}</td>                                                         
+        <td>{{tag.subjectflag}} / {{tag.objectflag}} / {{tag.verbflag}} / {{tag.etcflag}}</td>
+		<td><button type="button" class="button" id="showsentence" onclick="showSentence({{tag.id}})">문장</br>보기</button></td>                                                 
+        <td class="{{tag.id}}td">
+	    <button onclick="editTag({{tag.id}})" type="button" class="warning button {{tag.id}}btn">수정</button>
+	    <button onclick="deleteTag({{tag.id}})" type="button" class="alert button {{tag.id}}btn">삭제</button></td>
+    </tr>
+    {% endfor %}                                                                      
+</tbody>
+				</table>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <div class="expanded row">
+        <h4 style="text-align:center;margin-top:20%"><a href="/accounts/login/">로그인</a>하세요.</h4>
+    </div>
+    {% endif %}
+</body>
+<script>
+	$(document).foundation();
+</script>
+<script>
+	function deleteTag(id){
+       	aid = $('#aid').val();
+		$.ajax({
+   	       type: 'POST',
+           url : 'articleBody',
+		   data : {
+		       id: id,
+			   aid: aid,
+           },
+           success: function(data) {
+       	       var input = "";
+			   input += data;
+			   document.getElementById("tagList").innerHTML = input;
+               return true;    
+		   },
+		   error: function(thrownError){console.log(thrownError.responseText)}
+       }); 
+    };
+
+	function showSentence(id){
+       $.ajax({
+   	       type: 'POST',
+           url : 'confirmSentence',
+		   data : {
+		       id: id,
+           },
+           success: function(data) {
+				if (data != ""){
+       	       		alert(data);
+				}
+				else {
+					alert("저장된 문장이없습니다.");
+				}
+		   },
+		   error: function(thrownError){console.log("Error")}
+       }); 
+    };
+
+
+	function editTag(id) {
+	    $('.'+id).contents().unwrap().wrap('<td class='+id+'><textarea class='+id+'tx></textarea></td>');
+	    $('.'+id+'btn').hide();
+	    $('.'+id+'td').append($('<button/>',{
+		class:'success button',
+		onclick:'saveEditTag('+id+')',
+		text: '저장',
+		}));
+
+	};
+
+	function saveEditTag(id){
+	    aid = $('#aid').val();
+	    subject = $('.'+id+'tx:eq(0)').val();
+	    object = $('.'+id+'tx:eq(1)').val();
+	    verb = $('.'+id+'tx:eq(2)').val();
+	    etc = $('.'+id+'tx:eq(3)').val();
+	    
+	    $.ajax({
+		type: 'POST',
+		url: 'editTags',
+	        data : {aid: aid, id: id, subject:subject, object:object, verb:verb, etc:etc},
+		success: function (resp){
+		    alert("Update Success");
+		    $('.saved_taglist').html(resp);
+		},
+		error: function() {
+		    alert("Save Error")
+		}
+	    });
+		    
+	};
+
+</script>
+</html>

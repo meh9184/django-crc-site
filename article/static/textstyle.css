@@ -1,0 +1,73 @@
+wrap {
+    background-color: darkslategrey;
+}
+
+/*article list home/ */
+
+.left h1 {
+    font-size: 30px;
+    font-family: "Palanquin", sans-serif;
+    line-height: 1;
+    color: greenyellow;
+    margin: 5px auto;
+    margin-top: 10px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 1px #000;
+}
+
+#clickmenu {
+    position: absolute;
+    top:15%;
+    padding: 5px;
+    margin: 0px 20%;
+    height: 5%;
+    background-color: #white;
+    text-align: center;
+    width: 77%;
+}
+
+#clickmenu ul {
+    margin: 0px 20%;
+    padding: 0;
+    list-style:circle;
+/*
+    width: 50%;
+    top: 250px;
+*/
+        
+}
+
+#clickmenu li {
+    position;
+    margin-left: 0px auto;
+    display: line;
+    float: left;
+    text-align: center;
+    width: 30%;
+    height: 30px;
+/*    line-height: 40px;*/
+    list-style: none;
+    padding: 0px 10px;
+    border-left: 1px solid #999;
+}
+#clickmenu li:first-child{border-left:none;} 
+
+#clickmenu li p {
+    font-size: 15px;
+    font-family: "Palanquin", sans-serif;
+    text-decoration: none;
+    text-align: center;
+    padding: 5px;
+    color: greenyellow;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#clickmenu li a {
+    font-size:22px;
+    font-family: "Palanquin", sans-serif;
+        color: greenyellow;
+        text-shadow: 1px 1px 1px #000;
+
+    
+}
